@@ -115,4 +115,12 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RabbitMq
         }
     }
 
+    public class RabbitMqCoreTests : RabbitMqTestsBase<RemoteServiceFixtures.RabbitMqCoreBasicMvcFixture>
+    {
+        public RabbitMqCoreTests(RemoteServiceFixtures.RabbitMqCoreBasicMvcFixture fixture, ITestOutputHelper output)
+            : base(fixture, output)
+        {
+        }
+    }
+
 }

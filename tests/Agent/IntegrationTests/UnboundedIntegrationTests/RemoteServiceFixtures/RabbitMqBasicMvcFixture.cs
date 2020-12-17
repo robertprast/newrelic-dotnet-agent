@@ -17,11 +17,11 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
 
         private const string ApplicationName = "RabbitMqBasicMvcApplication";
 
-        public RabbitMqBasicMvcFixture() : this(ApplicationName)
+        public RabbitMqBasicMvcFixture() : this(ApplicationName, new RemoteWebApplication(ApplicationName, ApplicationType.Unbounded))
         {
         }
 
-        protected RabbitMqBasicMvcFixture(string applicationName) : base(new RemoteWebApplication(applicationName, ApplicationType.Unbounded))
+        protected RabbitMqBasicMvcFixture(string applicationName, RemoteApplication application) : base(application)
         {
         }
 
@@ -50,7 +50,7 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
         public string GetMessageQueue_RabbitMQ_SendReceive(string message)
         {
             var queueName = GenerateQueue();
-            var address = $"http://{DestinationServerName}:{Port}/RabbitMQ/RabbitMQ_SendReceive?queueName={queueName}&message={message}";
+            var address = $"http://localhost:{Port}/RabbitMQ/RabbitMQ_SendReceive?queueName={queueName}&message={message}";
 
             using (var webClient = new WebClient())
             {
@@ -63,7 +63,7 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
         public bool GetMessageQueue_RabbitMQ_SendReceive_HeaderExists(string message)
         {
             var queueName = GenerateQueue();
-            var address = $"http://{DestinationServerName}:{Port}/RabbitMQ/RabbitMQ_SendReceive_HeaderExists?queueName={queueName}&message={message}";
+            var address = $"http://localhost:{Port}/RabbitMQ/RabbitMQ_SendReceive_HeaderExists?queueName={queueName}&message={message}";
 
             using (var webClient = new WebClient())
             {
@@ -76,7 +76,7 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
         public string GetMessageQueue_RabbitMQ_SendReceive_HeaderValue(string message)
         {
             var queueName = GenerateQueue();
-            var address = $"http://{DestinationServerName}:{Port}/RabbitMQ/RabbitMQ_SendReceive_HeaderValue?queueName={queueName}&message={message}";
+            var address = $"http://localhost:{Port}/RabbitMQ/RabbitMQ_SendReceive_HeaderValue?queueName={queueName}&message={message}";
 
             using (var webClient = new WebClient())
             {
@@ -89,7 +89,7 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
         public string GetMessageQueue_RabbitMQ_SendReceiveWithEventingConsumer(string message)
         {
             var queueName = GenerateQueue();
-            var address = $"http://{DestinationServerName}:{Port}/RabbitMQ/RabbitMQ_SendReceiveWithEventingConsumer?queueName={queueName}&message={message}";
+            var address = $"http://localhost:{Port}/RabbitMQ/RabbitMQ_SendReceiveWithEventingConsumer?queueName={queueName}&message={message}";
 
             using (var webClient = new WebClient())
             {
@@ -102,7 +102,7 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
         public void GetMessageQueue_RabbitMQ_SendReceiveTopic(string topicName, string message)
         {
             var exchangeName = GenerateExchange();
-            var address = $"http://{DestinationServerName}:{Port}/RabbitMQ/RabbitMQ_SendReceiveTopic?exchangeName={exchangeName}&topicName={topicName}&message={message}";
+            var address = $"http://localhost:{Port}/RabbitMQ/RabbitMQ_SendReceiveTopic?exchangeName={exchangeName}&topicName={topicName}&message={message}";
 
             using (var webClient = new WebClient())
             {
@@ -113,7 +113,7 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
 
         public void GetMessageQueue_RabbitMQ_SendReceiveTempQueue(string message)
         {
-            var address = $"http://{DestinationServerName}:{Port}/RabbitMQ/RabbitMQ_SendReceiveTempQueue?message={message}";
+            var address = $"http://localhost:{Port}/RabbitMQ/RabbitMQ_SendReceiveTempQueue?message={message}";
 
             using (var webClient = new WebClient())
             {
@@ -125,7 +125,7 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
         public string GetMessageQueue_RabbitMQ_Purge()
         {
             var queueName = GenerateQueue();
-            var address = $"http://{DestinationServerName}:{Port}/RabbitMQ/RabbitMQ_QueuePurge?queueName={queueName}";
+            var address = $"http://localhost:{Port}/RabbitMQ/RabbitMQ_QueuePurge?queueName={queueName}";
 
             using (var webClient = new WebClient())
             {
@@ -143,7 +143,18 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RemoteServiceFixtures
         private const string ApplicationName = "RabbitMqLegacyBasicMvcApplication";
 
         public RabbitMqLegacyBasicMvcFixture()
-            : base(ApplicationName)
+            : base(ApplicationName, new RemoteWebApplication(ApplicationName, ApplicationType.Unbounded))
+        {
+        }
+    }
+
+    public class RabbitMqCoreBasicMvcFixture : RabbitMqBasicMvcFixture
+    {
+        private const string ApplicationName = "RabbitMqCoreBasicMvcApplication";
+        private const string ExecutableName = "RabbitMqCoreBasicMvcApplication.exe";
+
+        public RabbitMqCoreBasicMvcFixture()
+            : base(ApplicationName, new RemoteService(ApplicationName, ExecutableName, "netcoreapp3.1", ApplicationType.Unbounded, isCoreApp: true, publishApp: true))
         {
         }
     }

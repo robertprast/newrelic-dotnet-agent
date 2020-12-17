@@ -103,4 +103,11 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RabbitMq
         }
     }
 
+    public class RabbitMqCoreDistributedTracingTests : RabbitMqDistributedTracingTestsBase<RemoteServiceFixtures.RabbitMqCoreBasicMvcFixture>
+    {
+        public RabbitMqCoreDistributedTracingTests(RemoteServiceFixtures.RabbitMqCoreBasicMvcFixture fixture, ITestOutputHelper output)
+            : base(fixture, output)
+        {
+        }
+    }
 }
