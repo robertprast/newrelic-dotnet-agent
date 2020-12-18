@@ -20,6 +20,12 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RabbitMq
         private string _sendReceiveQueue;
         private string _purgeQueue;
 
+        // Scope properties
+        public string ScopeSendReceive { get; set; } = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceive";
+        public string ScopeQueuePurge { get; set; } = "WebTransaction/MVC/RabbitMQController/RabbitMQ_QueuePurge";
+        public string ScopeSendReceiveTempQueue { get; set; } = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTempQueue";
+        public string ScopeSendReceiveTopic { get; set; } = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTopic";
+
         protected RabbitMqTestsBase(TFixture fixture, ITestOutputHelper output)  : base(fixture)
         {
             _fixture = fixture;
@@ -50,39 +56,39 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RabbitMq
             var expectedMetrics = new List<Assertions.ExpectedMetric>
             {
                 new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Produce/Named/{_sendReceiveQueue}", callCount = 1},
-                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Produce/Named/{_sendReceiveQueue}", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceive"},
+                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Produce/Named/{_sendReceiveQueue}", callCount = 1, metricScope = ScopeSendReceive},
 
                 new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Consume/Named/{_sendReceiveQueue}", callCount = 1},
-                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Consume/Named/{_sendReceiveQueue}", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceive"},
+                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Consume/Named/{_sendReceiveQueue}", callCount = 1, metricScope = ScopeSendReceive},
 
                 new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Produce/Named/{_purgeQueue}", callCount = 1 },
-                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Produce/Named/{_purgeQueue}", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_QueuePurge" },
+                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Produce/Named/{_purgeQueue}", callCount = 1, metricScope = ScopeQueuePurge },
 
                 new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Purge/Named/{_purgeQueue}", callCount = 1 },
-                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Purge/Named/{_purgeQueue}", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_QueuePurge" },
+                new Assertions.ExpectedMetric { metricName = $"MessageBroker/RabbitMQ/Queue/Purge/Named/{_purgeQueue}", callCount = 1, metricScope = ScopeQueuePurge },
 
                 new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Produce/Temp", callCount = 1 },
-                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Produce/Temp", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTempQueue"},
+                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Produce/Temp", callCount = 1, metricScope = ScopeSendReceiveTempQueue},
 
                 new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Topic/Produce/Named/SendReceiveTopic.Topic", callCount = 1 },
-                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Topic/Produce/Named/SendReceiveTopic.Topic", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTopic" },
+                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Topic/Produce/Named/SendReceiveTopic.Topic", callCount = 1, metricScope = ScopeSendReceiveTopic },
 
                 new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Consume/Temp", callCount = 2 },
-                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Consume/Temp", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTempQueue"},
-                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Consume/Temp", callCount = 1, metricScope = "WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTopic" },
+                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Consume/Temp", callCount = 1, metricScope = ScopeSendReceiveTempQueue},
+                new Assertions.ExpectedMetric { metricName = @"MessageBroker/RabbitMQ/Queue/Consume/Temp", callCount = 1, metricScope = ScopeSendReceiveTopic },
             };
 
-            var sendReceiveTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent("WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceive");
-            var sendReceiveTempQueueTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent("WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTempQueue");
-            var queuePurgeTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent("WebTransaction/MVC/RabbitMQController/RabbitMQ_QueuePurge");
-            var sendReceiveTopicTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent("WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceiveTopic");
+            var sendReceiveTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent(ScopeSendReceive);
+            var sendReceiveTempQueueTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent(ScopeSendReceiveTempQueue);
+            var queuePurgeTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent(ScopeQueuePurge);
+            var sendReceiveTopicTransactionEvent = _fixture.AgentLog.TryGetTransactionEvent(ScopeSendReceiveTopic);
 
             var expectedTransactionTraceSegments = new List<string>
             {
                 $"MessageBroker/RabbitMQ/Queue/Consume/Named/{_sendReceiveQueue}"
             };
 
-            var transactionSample = _fixture.AgentLog.TryGetTransactionSample($"WebTransaction/MVC/RabbitMQController/RabbitMQ_SendReceive");
+            var transactionSample = _fixture.AgentLog.TryGetTransactionSample(ScopeSendReceive);
 
 
             Assertions.MetricsExist(expectedMetrics, metrics);
@@ -120,6 +126,11 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.RabbitMq
         public RabbitMqCoreTests(RemoteServiceFixtures.RabbitMqCoreBasicMvcFixture fixture, ITestOutputHelper output)
             : base(fixture, output)
         {
+            base.ScopeSendReceive = "WebTransaction/MVC/RabbitMQ/RabbitMQ_SendReceive/{queueName}/{message}";
+            base.ScopeQueuePurge = "WebTransaction/MVC/RabbitMQ/RabbitMQ_QueuePurge/{queueName}";
+            base.ScopeSendReceiveTempQueue = "WebTransaction/MVC/RabbitMQ/RabbitMQ_SendReceiveTempQueue/{message}";
+            base.ScopeSendReceiveTopic = "WebTransaction/MVC/RabbitMQ/RabbitMQ_SendReceiveTopic/{exchangeName}/{topicName}/{message}";
+            
         }
     }
 
