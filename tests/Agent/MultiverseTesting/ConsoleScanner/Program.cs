@@ -58,7 +58,9 @@ namespace NewRelic.Agent.ConsoleScanner
             ProcessAssemblies(configuration);
             var reports = SerializeReports();
             WriteReportToDisk(reports, reportFilePath);
-            PrintReportToConsole();
+
+            // not really needed for normal operations.
+            //PrintReportToConsole();
          }
 
         public static void ProcessAssemblies(ScannerConfiguration configuration)
