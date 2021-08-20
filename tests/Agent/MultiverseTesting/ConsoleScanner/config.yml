@@ -1,32 +1,32 @@
 ﻿instrumentation-sets:
   # asp35 assemblies are installed with the app based on target framework and are not available from nuget
   # - name: asp35
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\Asp35\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\Asp35\Instrumentation.xml
   #   nuget-packages:
   #   local-assemblies:
 
-  # - name: aspNetCore
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\AspNetCore\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: Microsoft.AspNetCore.Hosting, versions: [2.1.1, 2.2.0, 2.2.7] }
-  #      - { package-name: Microsoft.AspNetCore.Mvc.Core, versions: [2.1.3, 2.1.16, 2.2.5] }
-  #   local-assemblies:
+  - name: aspNetCore
+    xml-file: ${{ MVS_XML_PATH }}\AspNetCore\Instrumentation.xml
+    nuget-packages:
+       - { package-name: Microsoft.AspNetCore.Hosting, versions: [2.0.3, 2.1.1, 2.2.7] }
+       - { package-name: Microsoft.AspNetCore.Mvc.Core, versions: [2.0.4, 2.1.16, 2.2.5] }
+    local-assemblies:
 
   # not available from nuget, dll in inst.xml isn't referenced by any test apps
   # - name: castleMonoRail
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\CastleMonoRail2\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\CastleMonoRail2\Instrumentation.xml
   #   nuget-packages:
   #   local-assemblies:
 
-  # - name: couchbase
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\Couchbase\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: CouchbaseNetClient, versions: [2.3.8, 2.4.8, 2.5.12, 2.6.2, 2.7.23, 3.0.7, 3.1.2] }
-  #   local-assemblies:
+  - name: couchbase
+    xml-file: ${{ MVS_XML_PATH }}\Couchbase\Instrumentation.xml
+    nuget-packages:
+       - { package-name: CouchbaseNetClient, versions: [2.0.3.2, 2.1.4, 2.2.8, 2.3.11, 2.4.8, 2.5.12, 2.6.2, 2.7.26, 3.0.7, 3.1.7, 3.2.0] }
+    local-assemblies:
 
   # not available from nuget, assembly in inst.xml is System.dll
   # - name: httpWebRequest
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\HttpWebRequest\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\HttpWebRequest\Instrumentation.xml
   #   nuget-packages:
   #   local-assemblies:
 
@@ -34,19 +34,19 @@
   - name: mongodb
     xml-file: ${{ MVS_XML_PATH }}\MongoDb\Instrumentation.xml
     nuget-packages:
-       - { package-name: mongocsharpdriver, versions: [1.5.0, 1.6.0, 1.6.1, 1.7.1, 1.8.3, 1.9.2, 1.10.0, 1.10.1, 1.11.0] }
+       - { package-name: mongocsharpdriver, versions: [1.5.0, 1.6.1, 1.7.1, 1.8.3, 1.9.2, 1.10.1, 1.11.0, 2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1] }
     local-assemblies:
 
   - name: mongodb26
     xml-file: ${{ MVS_XML_PATH }}\MongoDb26\Instrumentation.xml
     nuget-packages:
-       - { package-name: MongoDB.Driver, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.2] }
-       - { package-name: MongoDB.Driver.Core, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.2] }
+       - { package-name: MongoDB.Driver, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1] }
+       - { package-name: MongoDB.Driver.Core, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1] }
     local-assemblies:
 
   # assembly in inst.xml is System.Messaging.dll, can get newer ones from nuget (?), but typically located in the GAC
   # - name: msmq
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\Msmq\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\Msmq\Instrumentation.xml
   #   nuget-packages:
   #       # different packages for different framework versions, package structure doesn't contain a 'lib' folder
   #       # TODO: if supporting this pkg for checking, will need to update package unpacking to find the .dlls
@@ -54,39 +54,39 @@
   #   local-assemblies:
   #      - C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Messaging\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Messaging.dll
 
-  # - name: nServiceBus
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\NServiceBus\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: NServiceBus, versions: [5.0.0, 5.1.9, 5.2.26, 6.0.10, 6.1.10, 6.2.8, 6.3.9, 6.4.5, 6.5.10, 7.0.3, 7.1.13, 7.2.5, 7.3.2, 7.4.4] }
-  #   local-assemblies:
+  - name: nServiceBus
+    xml-file: ${{ MVS_XML_PATH }}\NServiceBus\Instrumentation.xml
+    nuget-packages:
+       - { package-name: NServiceBus, versions: [4.7.12, 5.0.11, 5.1.9, 5.2.26, 6.0.10, 6.1.10, 6.2.8, 6.3.9, 6.4.5, 6.5.10, 7.0.3, 7.1.13, 7.2.5, 7.3.2, 7.4.7, 7.5.0] }
+    local-assemblies:
 
-  # - name: openRasta
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\OpenRasta\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: openrasta-hosting-aspnet, versions: [2.5.25, 2.5.2000] }
-  #   local-assemblies:
+  - name: openRasta
+    xml-file: ${{ MVS_XML_PATH }}\OpenRasta\Instrumentation.xml
+    nuget-packages:
+       - { package-name: openrasta-hosting-aspnet, versions: [2.5.17, 2.5.20, 2.5.22, 2.5.25, 2.5.2000] }
+    local-assemblies:
 
-  # - name: owin
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\Owin\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: Microsoft.Owin.Hosting, versions: [2.0.2, 2.1.0, 3.0.1, 3.1.0, 4.1.1] }
-  #   local-assemblies:
+  - name: owin
+    xml-file: ${{ MVS_XML_PATH }}\Owin\Instrumentation.xml
+    nuget-packages:
+       - { package-name: Microsoft.Owin.Hosting, versions: [2.0.2, 2.1.0, 3.0.1, 3.1.0, 4.0.1, 4.1.1, 4.2.0] }
+    local-assemblies:
   
   - name: rabbitmq
     xml-file: ${{ MVS_XML_PATH }}\RabbitMq\Instrumentation.xml
     nuget-packages:
-       - { package-name: RabbitMQ.Client, versions: [3.6.9, 4.1.3, 5.1.2, 5.2.0, 6.0.0, 6.1.0,  6.2.1] }
+       - { package-name: RabbitMQ.Client, versions: [3.6.9, 4.1.3, 5.1.2, 5.2.0, 6.0.0, 6.1.0, 6.2.1] }
     local-assemblies:
 
-  # - name: restSharp
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\RestSharp\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: RestSharp, versions: [105.2.3, 106.11.7] }
-  #   local-assemblies:
+  - name: restSharp
+    xml-file: ${{ MVS_XML_PATH }}\RestSharp\Instrumentation.xml
+    nuget-packages:
+       - { package-name: RestSharp, versions: [104.0.0, 104.1.0, 104.2.0, 104.3.3, 104.4.0, 104.5.0, 105.0.1, 105.1.0, 105.2.3, 106.0.1, 106.1.0, 106.2.2, 106.3.1, 106.4.2, 106.5.4, 106.6.10, 106.8.0, 106.9.0, 106.10.1, 106.11.7, 106.12.0] }
+    local-assemblies:
 
   # assembly in inst.xml is System.Web.Extensions.dll, can get newer ones from nuget (?), but typically located in the GAC
   # - name: scriptHandlerFactory
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\ScriptHandlerFactory\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\ScriptHandlerFactory\Instrumentation.xml
   #   nuget-packages:
   #       # different packages for different framework versions, package structure doesn't contain a 'lib' folder
   #       # TODO: if supporting this pkg for checking, will need to update package unpacking to find the .dlls
@@ -94,49 +94,49 @@
   #   local-assemblies:
   #      - C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Web.Extensions\v4.0_4.0.0.0__31bf3856ad364e35\System.Web.Extensions.dll
     
-  # - name: serviceStackRedis
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\ScriptHandlerFactory\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: ServiceStack.Redis, versions: [4.0.40, 4.5.14, 5.10.4] }
-  #   local-assemblies:
+  - name: serviceStackRedis
+    xml-file: ${{ MVS_XML_PATH }}\ServiceStackRedis\Instrumentation.xml
+    nuget-packages:
+       - { package-name: ServiceStack.Redis, versions: [4.0.62, 4.5.14, 5.0.2, 5.1.0, 5.2.0, 5.3.0, 5.4.0, 5.5.0, 5.6.0, 5.7.0, 5.8.0, 5.9.2, 5.10.4, 5.11.0, 5.12.0] }
+    local-assemblies:
 
-  # - name: stackExchangeRedis
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\StackExchangeRedis\Instrumentation.xml
-  #   nuget-packages:
-  #      - { package-name: StackExchange.Redis, versions: [1.0.488, 1.1.608, 1.2.6, 2.0.601, 2.2.4] }
-  #      - { package-name: StackExchange.Redis.StrongName, versions: [1.0.488, 1.1.608, 1.2.6] }
-  #   local-assemblies:
+  - name: stackExchangeRedis
+    xml-file: ${{ MVS_XML_PATH }}\StackExchangeRedis\Instrumentation.xml
+    nuget-packages:
+       - { package-name: StackExchange.Redis, versions: [1.0.488, 1.1.608, 1.2.6, 2.0.601, 2.1.58, 2.2.4, 2.2.62] }
+       - { package-name: StackExchange.Redis.StrongName, versions: [1.0.488, 1.1.608, 1.2.6] }
+    local-assemblies:
 
   # 1 assembly in inst.xml is System.ServiceModel.dll
   # available in commented out package, but typically located in the GAC
   # System.ServiceModel.Activation.dll (WCF4) isn't in my GAC (?)
   # - name: wcf3
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\Wcf3\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\Wcf3\Instrumentation.xml
   #   nuget-packages:
   #      #- { package-name: runtime.win10-x64.Microsoft.NETCore.UniversalWindowsPlatform, versions: [?] }
   #   local-assemblies:
   #     - C:\Windows\assembly\GAC_MSIL\System.ServiceModel\3.0.0.0__b77a5c561934e089\System.ServiceModel.dll
 
-  # - name: webApi1
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\WebApi1\Instrumentation.xml
-  #   nuget-packages:
-  #       - { package-name: Microsoft.AspNet.WebApi.Core, versions: [4.0.20710, 4.0.30506] }
-  #   local-assemblies:
+  - name: webApi1
+    xml-file: ${{ MVS_XML_PATH }}\WebApi1\Instrumentation.xml
+    nuget-packages:
+        - { package-name: Microsoft.AspNet.WebApi.Core, versions: [4.0.20710, 4.0.30506] }
+    local-assemblies:
 
-  # - name: webApi2
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\WebApi2\Instrumentation.xml
-  #   nuget-packages:
-  #       - { package-name: Microsoft.AspNet.WebApi.Core, versions: [5.1.2, 5.2.7] }
-  #   local-assemblies:
+  - name: webApi2
+    xml-file: ${{ MVS_XML_PATH }}\WebApi2\Instrumentation.xml
+    nuget-packages:
+        - { package-name: Microsoft.AspNet.WebApi.Core, versions: [5.0.0, 5.1.2, 5.2.7] }
+    local-assemblies:
       
-  # - name: webOptimization
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\WebOptimization\Instrumentation.xml
-  #   nuget-packages:
-  #       - { package-name: Microsoft.AspNet.Web.Optimization, versions: [1.1.0, 1.1.3] }
-  #   local-assemblies:
+  - name: webOptimization
+    xml-file: ${{ MVS_XML_PATH }}\WebOptimization\Instrumentation.xml
+    nuget-packages:
+        - { package-name: Microsoft.AspNet.Web.Optimization, versions: [1.0.0, 1.1.0, 1.1.1, 1.1.2, 1.1.3] }
+    local-assemblies:
 
   # - name: webServices
-  #   xml-file: C:\git\newrelic-dotnet-agent\src\Agent\NewRelic\Agent\Extensions\Providers\Wrapper\WebOptimization\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\WebOptimization\Instrumentation.xml
   #   nuget-packages:
   #         - { package-name: microsoft.netframework.referenceassemblies.net45, versions: [1.0.0] }
   #   local-assemblies:
@@ -157,9 +157,9 @@
     nuget-packages:
         #- { package-name: microsoft.netframework.referenceassemblies.net45, versions: [1.0.0] }
         #- { package-name: microsoft.netnetcore.app, versions: [2.1.25, 2.2.8] }
-        #- { package-name: System.Data.SqlClient, versions: [4.4.0, 4.5.3, 4.6.1, 4.7.0, 4.8.2] }
-        #- { package-name: Devart.Data.MySql, versions: [8.9.12, 8.19.1812] }
-        - { package-name: MySql.Data, versions: [6.9.12, 8.0.25] }
-        #- { package-name: MySqlConnector, versions: [0.69.10, 1.0.1, 1.2.1] }
-        #- { package-name: Npgsql, versions: [4.0.5, 4.1.8, 5.0.3] }
+        - { package-name: System.Data.SqlClient, versions: [4.1.0, 4.3.1, 4.4.3, 4.5.3, 4.6.1, 4.7.0, 4.8.2] }
+        - { package-name: Devart.Data.MySql, versions: [8.9.912, 8.10.1152, 8.11.1172, 8.12.1328, 8.13.1437, 8.14.1470, 8.15.1519, 8.16.1541, 8.17.1686, 8.18.1759, 8.19.1944] }
+        - { package-name: MySql.Data, versions: [6.9.12, 6.10.9, 8.0.13, 8.0.26] }
+        - { package-name: MySqlConnector, versions: [0.19.2, 0.25.1, 0.26.4, 0.32.0, 0.40.4, 0.42.1, 0.43.0, 0.44.1, 0.45.1, 0.47.1, 0.49.3, 0.56.0, 0.59.2, 0.61.0, 0.66.0, 0.69.10, 1.0.1, 1.1.0, 1.2.1, 1.3.11] }
+        - { package-name: Npgsql, versions: [3.2.7, 4.0.12, 4.1.2, 4.1.9, 5.0.7] }
     local-assemblies:

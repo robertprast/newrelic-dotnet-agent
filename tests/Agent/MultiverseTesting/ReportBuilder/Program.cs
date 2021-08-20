@@ -87,12 +87,13 @@ namespace ReportBuilder
                         var fqMethodname = $"{method.Key}.{validation.MethodSignature}";
                         if (methodSignatures.TryGetValue(fqMethodname, out var isValid) )
                         {
-                            if(isValid == validation.IsValid)
+                            if (!isValid && validation.IsValid)
                             {
-                                continue;
+                                // originally set as false, but now we detected true.  Usually a difference between net4 and net4-client.  Old stuff, so just going with true.
+                                methodSignatures[fqMethodname] = true;
                             }
 
-                            throw new Exception($"ERROR: Method '{fqMethodname}' exists with different validation result. Has {isValid} should be {validation.IsValid}");
+                            continue;
                         }
 
                         methodSignatures.Add(fqMethodname, validation.IsValid);

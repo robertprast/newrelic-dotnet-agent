@@ -44,7 +44,26 @@ namespace NewRelic.Agent.MultiverseScanner.Models
             model.Matches.AddRange(from tracerFactory in extension.Instrumentation.TracerFactories
                                    from match in tracerFactory.Matches
                                    select match);
+            FixGenericTokensInExactMethodMatcher(model);
             return model;
+        }
+
+        // This fixes how the XML files (profiler) indicate generics.  The XML uses "!!0" to represent the generic, while the code uses "T".
+        // Since the code and therefore Cecil expect "T" we need to replace the token.
+        private static void FixGenericTokensInExactMethodMatcher(InstrumentationModel instrumentationModel)
+        {
+            foreach (var match in instrumentationModel.Matches)
+            {
+                foreach (var exactMethodMatcher in match.ExactMethodMatchers)
+                {
+                    if (string.IsNullOrWhiteSpace(exactMethodMatcher?.Parameters))
+                    {
+                        continue;
+                    }
+
+                    exactMethodMatcher.Parameters = exactMethodMatcher.Parameters.Replace("!!0","T");
+                }
+            }
         }
     }
 }
