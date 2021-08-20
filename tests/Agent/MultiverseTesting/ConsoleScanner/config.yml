@@ -136,7 +136,7 @@
     local-assemblies:
 
   # - name: webServices
-  #   xml-file: ${{ MVS_XML_PATH }}\WebOptimization\Instrumentation.xml
+  #   xml-file: ${{ MVS_XML_PATH }}\WebServices\Instrumentation.xml
   #   nuget-packages:
   #         - { package-name: microsoft.netframework.referenceassemblies.net45, versions: [1.0.0] }
   #   local-assemblies:
@@ -144,12 +144,13 @@
   #     - C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Web.Services\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll
 
   # TODO: figure out what dlls to test re: .net fw & .net core
-  # - name: httpClient
-  #   xml-file: C:\Users\LyniceSpangler\source\repos\dotnet-multiverse-scanner\TestData\HttpClient\Instrumentation.xml
-  #   nuget-packages:
-  #       - { package-name: microsoft.netframework.referenceassemblies.net45, versions: [1.0.0] }
-  #       - { package-name: microsoft.netnetcore.app, versions: [2.1.25, 2.2.8] }
-  #   local-assemblies:
+  - name: httpClient
+    xml-file: ${{ MVS_XML_PATH }}\HttpClient\Instrumentation.xml
+    nuget-packages:
+        - { package-name: System.Net.Http, versions: [4.0.0, 4.1.4, 4.3.4] }
+        - { package-name: Microsoft.NETCore.App, versions: [2.0.9, 2.1.30, 2.2.8] }
+        - { package-name: Microsoft.NETCore.App.Ref, versions: [3.0.0, 3.1.0, 5.0.0] }
+    local-assemblies:
 
    # TODO: add assembly for Oracle.DataAccess & Oracle.ManagedDataAccess & IBM.Data.DB2
   - name: sql
@@ -160,6 +161,6 @@
         - { package-name: System.Data.SqlClient, versions: [4.1.0, 4.3.1, 4.4.3, 4.5.3, 4.6.1, 4.7.0, 4.8.2] }
         - { package-name: Devart.Data.MySql, versions: [8.9.912, 8.10.1152, 8.11.1172, 8.12.1328, 8.13.1437, 8.14.1470, 8.15.1519, 8.16.1541, 8.17.1686, 8.18.1759, 8.19.1944] }
         - { package-name: MySql.Data, versions: [6.9.12, 6.10.9, 8.0.13, 8.0.26] }
-        - { package-name: MySqlConnector, versions: [0.19.2, 0.25.1, 0.26.4, 0.32.0, 0.40.4, 0.42.1, 0.43.0, 0.44.1, 0.45.1, 0.47.1, 0.49.3, 0.56.0, 0.59.2, 0.61.0, 0.66.0, 0.69.10, 1.0.1, 1.1.0, 1.2.1, 1.3.11] }
+        - { package-name: MySqlConnector, versions: [0.25.1, 0.26.4, 0.69.10, 1.0.1, 1.1.0, 1.2.1, 1.3.11] }
         - { package-name: Npgsql, versions: [3.2.7, 4.0.12, 4.1.2, 4.1.9, 5.0.7] }
     local-assemblies:
