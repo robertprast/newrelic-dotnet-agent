@@ -1,9 +1,10 @@
 ﻿body {
-    font-family: arial, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.85em;
 }
 
 table {
-    font-family: arial, sans-serif;
+    font-family: Tahoma, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
@@ -13,9 +14,13 @@ tr:nth-child(even) {
 }
 
 td, th {
-    border: 1px solid #e6e6e6;
+    border: 1px solid;
     text-align: left;
     padding: 5px;
+}
+
+tr:hover {
+    background-color: powderblue;
 }
 
 #pass {

@@ -67,6 +67,7 @@ namespace ReportBuilder
                 builder.AppendLine(string.Empty);
                 builder.AppendLine($"<h3>Package: {packageOverview.PackageName}</h3>");
                 builder.AppendLine(string.Empty);
+                builder.AppendLine("<div style=\"overflow-x:auto;\">");
                 builder.AppendLine("<table>");
 
                 // add header row
@@ -130,6 +131,7 @@ namespace ReportBuilder
                 }
 
                 builder.AppendLine("</table>");
+                builder.AppendLine("</div>");
                 builder.AppendLine(string.Empty);
             }
 
