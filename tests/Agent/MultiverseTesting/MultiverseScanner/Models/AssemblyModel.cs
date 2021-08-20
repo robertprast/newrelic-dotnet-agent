@@ -34,7 +34,8 @@ namespace NewRelic.Agent.MultiverseScanner.Models
 
         private AssemblyModel Build(ModuleDefinition moduleDefinition)
         {
-            if (moduleDefinition == null)
+
+            if (string.IsNullOrWhiteSpace(moduleDefinition?.Assembly?.Name?.Name))
             {
                 return this;
             }
