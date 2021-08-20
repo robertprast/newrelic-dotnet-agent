@@ -23,6 +23,14 @@ tr:hover {
     background-color: powderblue;
 }
 
+tr:hover #pass {
+    background-color: lightgreen;
+}
+
+tr:hover #fail {
+    background-color: lightcoral;
+}
+
 #pass {
     background-color: green;
 }
