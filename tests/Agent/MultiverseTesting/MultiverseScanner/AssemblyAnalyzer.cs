@@ -12,19 +12,19 @@ namespace NewRelic.Agent.MultiverseScanner
 
     public class AssemblyAnalyzer
     {
-        public AssemblyAnalysis RunAssemblyAnalysis(string filePath)
+        public AssemblyAnalysis RunAssemblyAnalysis(string filePath, string nugetDataDirectory)
         {
-            var assemblyModel = GetAssemblyModel(filePath);
+            var assemblyModel = GetAssemblyModel(filePath, nugetDataDirectory);
             var assemblyAnalysis = new AssemblyAnalysis(assemblyModel);
             return assemblyAnalysis;
         }
 
-        public AssemblyModel GetAssemblyModel(string filePath)
+        public AssemblyModel GetAssemblyModel(string filePath, string nugetDataDirectory)
         {
             try
             {
                 var moduleDefinition = ModuleDefinition.ReadModule(filePath);
-                var assemblyModel = AssemblyModel.GetAssemblyModel(moduleDefinition);
+                var assemblyModel = AssemblyModel.GetAssemblyModel(moduleDefinition, nugetDataDirectory);
                 return assemblyModel;
             }
             catch(System.BadImageFormatException badImageFormatException)

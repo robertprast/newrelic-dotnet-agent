@@ -8,8 +8,8 @@
   - name: aspNetCore
     xml-file: ${{ MVS_XML_PATH }}\AspNetCore\Instrumentation.xml
     nuget-packages:
-       - { package-name: Microsoft.AspNetCore.Hosting, versions: [2.0.3, 2.1.1, 2.2.7] }
-       - { package-name: Microsoft.AspNetCore.Mvc.Core, versions: [2.0.4, 2.1.16, 2.2.5] }
+      - { package-name: Microsoft.AspNetCore.Hosting, versions: [2.0.3, 2.1.1, 2.2.7], is-base-type: false }
+      - { package-name: Microsoft.AspNetCore.Mvc.Core, versions: [2.0.4, 2.1.16, 2.2.5], is-base-type: false }
     local-assemblies:
 
   # not available from nuget, dll in inst.xml isn't referenced by any test apps
@@ -21,7 +21,7 @@
   - name: couchbase
     xml-file: ${{ MVS_XML_PATH }}\Couchbase\Instrumentation.xml
     nuget-packages:
-       - { package-name: CouchbaseNetClient, versions: [2.0.3.2, 2.1.4, 2.2.8, 2.3.11, 2.4.8, 2.5.12, 2.6.2, 2.7.26, 3.0.7, 3.1.7, 3.2.0] }
+      - { package-name: CouchbaseNetClient, versions: [2.0.3.2, 2.1.4, 2.2.8, 2.3.11, 2.4.8, 2.5.12, 2.6.2, 2.7.26, 3.0.7, 3.1.7, 3.2.0], is-base-type: false }
     local-assemblies:
 
   # not available from nuget, assembly in inst.xml is System.dll
@@ -34,14 +34,14 @@
   - name: mongodb
     xml-file: ${{ MVS_XML_PATH }}\MongoDb\Instrumentation.xml
     nuget-packages:
-       - { package-name: mongocsharpdriver, versions: [1.5.0, 1.6.1, 1.7.1, 1.8.3, 1.9.2, 1.10.1, 1.11.0, 2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1] }
+      - { package-name: mongocsharpdriver, versions: [1.5.0, 1.6.1, 1.7.1, 1.8.3, 1.9.2, 1.10.1, 1.11.0, 2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1], is-base-type: false }
     local-assemblies:
 
   - name: mongodb26
     xml-file: ${{ MVS_XML_PATH }}\MongoDb26\Instrumentation.xml
     nuget-packages:
-       - { package-name: MongoDB.Driver, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1] }
-       - { package-name: MongoDB.Driver.Core, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1] }
+      - { package-name: MongoDB.Driver, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1], is-base-type: false }
+      - { package-name: MongoDB.Driver.Core, versions: [2.0.2, 2.1.1, 2.2.4, 2.3.0, 2.4.4, 2.5.1, 2.6.1, 2.7.3, 2.8.1, 2.9.3, 2.10.4, 2.11.6, 2.12.4, 2.13.1], is-base-type: false }
     local-assemblies:
 
   # assembly in inst.xml is System.Messaging.dll, can get newer ones from nuget (?), but typically located in the GAC
@@ -57,31 +57,31 @@
   - name: nServiceBus
     xml-file: ${{ MVS_XML_PATH }}\NServiceBus\Instrumentation.xml
     nuget-packages:
-       - { package-name: NServiceBus, versions: [4.7.12, 5.0.11, 5.1.9, 5.2.26, 6.0.10, 6.1.10, 6.2.8, 6.3.9, 6.4.5, 6.5.10, 7.0.3, 7.1.13, 7.2.5, 7.3.2, 7.4.7, 7.5.0] }
+      - { package-name: NServiceBus, versions: [4.7.12, 5.0.11, 5.1.9, 5.2.26, 6.0.10, 6.1.10, 6.2.8, 6.3.9, 6.4.5, 6.5.10, 7.0.3, 7.1.13, 7.2.5, 7.3.2, 7.4.7, 7.5.0], is-base-type: false }
     local-assemblies:
 
   - name: openRasta
     xml-file: ${{ MVS_XML_PATH }}\OpenRasta\Instrumentation.xml
     nuget-packages:
-       - { package-name: openrasta-hosting-aspnet, versions: [2.5.17, 2.5.20, 2.5.22, 2.5.25, 2.5.2000] }
+      - { package-name: openrasta-hosting-aspnet, versions: [2.5.17, 2.5.20, 2.5.22, 2.5.25, 2.5.2000], is-base-type: false }
     local-assemblies:
 
   - name: owin
     xml-file: ${{ MVS_XML_PATH }}\Owin\Instrumentation.xml
     nuget-packages:
-       - { package-name: Microsoft.Owin.Hosting, versions: [2.0.2, 2.1.0, 3.0.1, 3.1.0, 4.0.1, 4.1.1, 4.2.0] }
+      - { package-name: Microsoft.Owin.Hosting, versions: [2.0.2, 2.1.0, 3.0.1, 3.1.0, 4.0.1, 4.1.1, 4.2.0], is-base-type: false }
     local-assemblies:
   
   - name: rabbitmq
     xml-file: ${{ MVS_XML_PATH }}\RabbitMq\Instrumentation.xml
     nuget-packages:
-       - { package-name: RabbitMQ.Client, versions: [3.6.9, 4.1.3, 5.1.2, 5.2.0, 6.0.0, 6.1.0, 6.2.1] }
+      - { package-name: RabbitMQ.Client, versions: [3.6.9, 4.1.3, 5.1.2, 5.2.0, 6.0.0, 6.1.0, 6.2.1], is-base-type: false }
     local-assemblies:
 
   - name: restSharp
     xml-file: ${{ MVS_XML_PATH }}\RestSharp\Instrumentation.xml
     nuget-packages:
-       - { package-name: RestSharp, versions: [104.0.0, 104.1.0, 104.2.0, 104.3.3, 104.4.0, 104.5.0, 105.0.1, 105.1.0, 105.2.3, 106.0.1, 106.1.0, 106.2.2, 106.3.1, 106.4.2, 106.5.4, 106.6.10, 106.8.0, 106.9.0, 106.10.1, 106.11.7, 106.12.0] }
+      - { package-name: RestSharp, versions: [104.0.0, 104.1.0, 104.2.0, 104.3.3, 104.4.0, 104.5.0, 105.0.1, 105.1.0, 105.2.3, 106.0.1, 106.1.0, 106.2.2, 106.3.1, 106.4.2, 106.5.4, 106.6.10, 106.8.0, 106.9.0, 106.10.1, 106.11.7, 106.12.0], is-base-type: false }
     local-assemblies:
 
   # assembly in inst.xml is System.Web.Extensions.dll, can get newer ones from nuget (?), but typically located in the GAC
@@ -97,14 +97,14 @@
   - name: serviceStackRedis
     xml-file: ${{ MVS_XML_PATH }}\ServiceStackRedis\Instrumentation.xml
     nuget-packages:
-       - { package-name: ServiceStack.Redis, versions: [4.0.62, 4.5.14, 5.0.2, 5.1.0, 5.2.0, 5.3.0, 5.4.0, 5.5.0, 5.6.0, 5.7.0, 5.8.0, 5.9.2, 5.10.4, 5.11.0, 5.12.0] }
+      - { package-name: ServiceStack.Redis, versions: [4.0.62, 4.5.14, 5.0.2, 5.1.0, 5.2.0, 5.3.0, 5.4.0, 5.5.0, 5.6.0, 5.7.0, 5.8.0, 5.9.2, 5.10.4, 5.11.0, 5.12.0], is-base-type: false }
     local-assemblies:
 
   - name: stackExchangeRedis
     xml-file: ${{ MVS_XML_PATH }}\StackExchangeRedis\Instrumentation.xml
     nuget-packages:
-       - { package-name: StackExchange.Redis, versions: [1.0.488, 1.1.608, 1.2.6, 2.0.601, 2.1.58, 2.2.4, 2.2.62] }
-       - { package-name: StackExchange.Redis.StrongName, versions: [1.0.488, 1.1.608, 1.2.6] }
+      - { package-name: StackExchange.Redis, versions: [1.0.488, 1.1.608, 1.2.6, 2.0.601, 2.1.58, 2.2.4, 2.2.62], is-base-type: false }
+      - { package-name: StackExchange.Redis.StrongName, versions: [1.0.488, 1.1.608, 1.2.6], is-base-type: false }
     local-assemblies:
 
   # 1 assembly in inst.xml is System.ServiceModel.dll
@@ -120,47 +120,72 @@
   - name: webApi1
     xml-file: ${{ MVS_XML_PATH }}\WebApi1\Instrumentation.xml
     nuget-packages:
-        - { package-name: Microsoft.AspNet.WebApi.Core, versions: [4.0.20710, 4.0.30506] }
+      - { package-name: Microsoft.AspNet.WebApi.Core, versions: [4.0.20710, 4.0.30506], is-base-type: false }
     local-assemblies:
 
   - name: webApi2
     xml-file: ${{ MVS_XML_PATH }}\WebApi2\Instrumentation.xml
     nuget-packages:
-        - { package-name: Microsoft.AspNet.WebApi.Core, versions: [5.0.0, 5.1.2, 5.2.7] }
+      - { package-name: Microsoft.AspNet.WebApi.Core, versions: [5.0.0, 5.1.2, 5.2.7], is-base-type: false }
     local-assemblies:
       
   - name: webOptimization
     xml-file: ${{ MVS_XML_PATH }}\WebOptimization\Instrumentation.xml
     nuget-packages:
-        - { package-name: Microsoft.AspNet.Web.Optimization, versions: [1.0.0, 1.1.0, 1.1.1, 1.1.2, 1.1.3] }
+      - { package-name: Microsoft.AspNet.Web.Optimization, versions: [1.0.0, 1.1.0, 1.1.1, 1.1.2, 1.1.3], is-base-type: false }
     local-assemblies:
 
-  # - name: webServices
-  #   xml-file: ${{ MVS_XML_PATH }}\WebServices\Instrumentation.xml
-  #   nuget-packages:
-  #         - { package-name: microsoft.netframework.referenceassemblies.net45, versions: [1.0.0] }
-  #   local-assemblies:
-  #     - C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Web.Extensions\v4.0_4.0.0.0__31bf3856ad364e35\System.Web.Extensions.dll
-  #     - C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Web.Services\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll
+    # TODO: missing one method, probably found in local assemblies...
+  - name: webServices
+    xml-file: ${{ MVS_XML_PATH }}\WebServices\Instrumentation.xml
+    nuget-packages:
+      - { package-name: microsoft.netframework.referenceassemblies.net452, versions: [1.0.2], is-base-type: false }
+      - { package-name: microsoft.netframework.referenceassemblies.net462, versions: [1.0.2], is-base-type: false }
+      - { package-name: microsoft.netframework.referenceassemblies.net472, versions: [1.0.2], is-base-type: false }
+      - { package-name: microsoft.netframework.referenceassemblies.net48, versions: [1.0.2], is-base-type: false }
+    local-assemblies:
+      # - C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Web.Extensions\v4.0_4.0.0.0__31bf3856ad364e35\System.Web.Extensions.dll
+      # - C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Web.Services\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll
 
-  # TODO: figure out what dlls to test re: .net fw & .net core
+  # TODO: missing some methods, probably found in local assemblies...
   - name: httpClient
     xml-file: ${{ MVS_XML_PATH }}\HttpClient\Instrumentation.xml
     nuget-packages:
-        - { package-name: System.Net.Http, versions: [4.0.0, 4.1.4, 4.3.4] }
-        - { package-name: Microsoft.NETCore.App, versions: [2.0.9, 2.1.30, 2.2.8] }
-        - { package-name: Microsoft.NETCore.App.Ref, versions: [3.0.0, 3.1.0, 5.0.0] }
+      - { package-name: System.Net.Http, versions: [4.0.0, 4.1.4, 4.3.4], is-base-type: false }
+      - { package-name: Microsoft.NETCore.App, versions: [2.0.9, 2.1.30, 2.2.8], is-base-type: false }
+      - { package-name: Microsoft.NETCore.App.Ref, versions: [3.0.0, 3.1.0, 5.0.0], is-base-type: false }
     local-assemblies:
 
    # TODO: add assembly for Oracle.DataAccess & Oracle.ManagedDataAccess & IBM.Data.DB2
   - name: sql
     xml-file: ${{ MVS_XML_PATH }}\Sql\Instrumentation.xml
     nuget-packages:
-        #- { package-name: microsoft.netframework.referenceassemblies.net45, versions: [1.0.0] }
-        #- { package-name: microsoft.netnetcore.app, versions: [2.1.25, 2.2.8] }
-        - { package-name: System.Data.SqlClient, versions: [4.1.0, 4.3.1, 4.4.3, 4.5.3, 4.6.1, 4.7.0, 4.8.2] }
-        - { package-name: Devart.Data.MySql, versions: [8.9.912, 8.10.1152, 8.11.1172, 8.12.1328, 8.13.1437, 8.14.1470, 8.15.1519, 8.16.1541, 8.17.1686, 8.18.1759, 8.19.1944] }
-        - { package-name: MySql.Data, versions: [6.9.12, 6.10.9, 8.0.13, 8.0.26] }
-        - { package-name: MySqlConnector, versions: [0.25.1, 0.26.4, 0.69.10, 1.0.1, 1.1.0, 1.2.1, 1.3.11] }
-        - { package-name: Npgsql, versions: [3.2.7, 4.0.12, 4.1.2, 4.1.9, 5.0.7] }
+    #- { package-name: microsoft.netnetcore.app, versions: [2.1.25, 2.2.8] }
+      - { package-name: microsoft.netframework.referenceassemblies.net452, versions: [1.0.2], is-base-type: false }
+      - { package-name: microsoft.netframework.referenceassemblies.net462, versions: [1.0.2], is-base-type: false }
+      - { package-name: microsoft.netframework.referenceassemblies.net472, versions: [1.0.2], is-base-type: false }
+      - { package-name: microsoft.netframework.referenceassemblies.net48, versions: [1.0.2], is-base-type: false }
+      - { package-name: Microsoft.Data.SqlClient, versions: [1.0.19269.1, 1.1.4, 2.0.1, 2.1.3, 3.0.0], is-base-type: false }
+      - { package-name: System.Data.SqlClient, versions: [4.1.0, 4.3.1, 4.4.3, 4.5.3, 4.6.1, 4.7.0, 4.8.2], is-base-type: false }
+    local-assemblies:
+
+  - name: sql-MySQL
+    xml-file: ${{ MVS_XML_PATH }}\Sql\Instrumentation.xml
+    nuget-packages:
+      - { package-name: Devart.Data.MySql, versions: [8.9.912, 8.10.1152, 8.11.1172, 8.12.1328, 8.13.1437, 8.14.1470, 8.15.1519, 8.16.1541, 8.17.1686, 8.18.1759, 8.19.1944], is-base-type: false }
+      - { package-name: Devart.Data, versions: [5.0.1704], is-base-type: true }
+      - { package-name: MySql.Data, versions: [6.9.12, 6.10.9, 8.0.13, 8.0.26], is-base-type: false }
+      - { package-name: MySqlConnector, versions: [0.25.1, 0.26.4, 0.69.10, 1.0.1, 1.1.0, 1.2.1, 1.3.11], is-base-type: false }
+    local-assemblies:
+
+  - name: sql-Postgress
+    xml-file: ${{ MVS_XML_PATH }}\Sql\Instrumentation.xml
+    nuget-packages:
+      - { package-name: Npgsql, versions: [3.2.7, 4.0.12, 4.1.2, 4.1.9, 5.0.7], is-base-type: false }
+    local-assemblies:
+
+  - name: sql-Oracle
+    xml-file: ${{ MVS_XML_PATH }}\Sql\Instrumentation.xml
+    nuget-packages:
+      - { package-name: Oracle.ManagedDataAccess, versions: [12.1.24160719, 12.1.24210709, 12.2.1100, 18.3.0, 18.15.0, 19.5.0, 19.6.0, 19.12.0, 21.3.0], is-base-type: false }
     local-assemblies:

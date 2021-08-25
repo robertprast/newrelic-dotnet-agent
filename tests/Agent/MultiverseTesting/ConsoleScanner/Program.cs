@@ -89,7 +89,7 @@ namespace NewRelic.Agent.ConsoleScanner
 
                         WriteLineToConsole($"Starting scan of '{intrumentedDllFileLocation}'");
                         var assemblyAnalyzer = new AssemblyAnalyzer();
-                        var assemblyAnalysis = assemblyAnalyzer.RunAssemblyAnalysis(intrumentedDllFileLocation);
+                        var assemblyAnalysis = assemblyAnalyzer.RunAssemblyAnalysis(intrumentedDllFileLocation, _nugetDataDirectory);
                         var instrumentationValidator = new InstrumentationValidator(assemblyAnalysis);
 
                         // just some debugging writes
@@ -123,14 +123,14 @@ namespace NewRelic.Agent.ConsoleScanner
             {
                 foreach (var nugetPackage in instrumentationSet.NugetPackages)
                 {
-                    downloadedNugetInfoList.AddRange(GetNugetPackages(nugetPackage.PackageName, nugetPackage.Versions, instrumentationAssemblies));
+                    downloadedNugetInfoList.AddRange(GetNugetPackages(nugetPackage.PackageName, nugetPackage.Versions, instrumentationAssemblies, nugetPackage.IsBaseType));
                 }
             }
 
             return downloadedNugetInfoList;
         }
 
-        public static List<DownloadedNugetInfo> GetNugetPackages(string packageName, List<string> versions, List<string> instrumentationAssemblies)
+        public static List<DownloadedNugetInfo> GetNugetPackages(string packageName, List<string> versions, List<string> instrumentationAssemblies, bool isBaseType)
         {
             var downloadedNugetInfos = new List<DownloadedNugetInfo>();
 
@@ -144,13 +144,18 @@ namespace NewRelic.Agent.ConsoleScanner
                     var dllFileLocations = new List<string>();
                     var nugetExtractDirectoryName = client.DownloadPackage(packageName, version);
 
+                    if (isBaseType)
+                    {
+                        continue;
+                    }
+
                     // TODO: this will get every version (net45, netstandard1.5) of the dll in the package, which may not be necessary; 
                     foreach (var instrumentationAssembly in instrumentationAssemblies)
                     {
                         dllFileLocations.AddRange(Directory.GetFiles(nugetExtractDirectoryName, "*.dll", SearchOption.AllDirectories));
                     }
 
-                    downloadedNugetInfos.Add(new DownloadedNugetInfo(dllFileLocations, version, packageName));
+                    downloadedNugetInfos.Add(new DownloadedNugetInfo(dllFileLocations.Distinct().ToList(), version, packageName));
                 }
             }
             catch (Exception ex)

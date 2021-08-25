@@ -11,5 +11,7 @@ namespace NewRelic.Agent.ConsoleScanner
         public string PackageName { get; set; }
 
         public List<string> Versions { get; set; }
+
+        public bool IsBaseType { get; set; }
     }
 }
