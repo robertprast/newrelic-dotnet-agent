@@ -53,22 +53,24 @@ namespace NewRelic.Agent.MultiverseScanner.Models
 
         private void BuildClassModels(Mono.Collections.Generic.Collection<TypeDefinition> typeDefinitions)
         {
-            var splitAssemblyName = AssemblyName.Split('.');
             foreach (var typeDefinition in typeDefinitions)
             {
-                if (typeDefinition.IsClass
-                    && (typeDefinition.FullName.StartsWith(AssemblyName) || typeDefinition.FullName.StartsWith(splitAssemblyName[0]))
+                if (!typeDefinition.IsClass
+                    || typeDefinition.FullName.StartsWith("<")
+                    || typeDefinition.FullName.StartsWith("__")
                     )
                 {
-                    //Build nested classes/methods.
-                    BuildClassModels(typeDefinition.NestedTypes);
-
-                    // Cecil uses a / to indicated a nested type while the profiler/XML uses +
-                    var correctedClassName = typeDefinition.FullName.Replace('/', '+');
-                    var classModel = new ClassModel(correctedClassName, GetAccessLevel(typeDefinition));
-                    BuildMethodModels(classModel, typeDefinition);
-                    ClassModels.Add(classModel.Name, classModel);
+                    continue;
                 }
+
+                //Build nested classes/methods.
+                BuildClassModels(typeDefinition.NestedTypes);
+
+                // Cecil uses a / to indicated a nested type while the profiler/XML uses +
+                var correctedClassName = typeDefinition.FullName.Replace('/', '+');
+                var classModel = new ClassModel(correctedClassName, GetAccessLevel(typeDefinition));
+                BuildMethodModels(classModel, typeDefinition);
+                ClassModels.Add(classModel.Name, classModel);
             }
         }
 
