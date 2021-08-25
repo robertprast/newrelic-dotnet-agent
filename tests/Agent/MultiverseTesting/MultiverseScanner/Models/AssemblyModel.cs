@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -59,7 +58,13 @@ namespace NewRelic.Agent.MultiverseScanner.Models
             }
 
             AssemblyName = moduleDefinition.Assembly.Name.Name;
-            foreach (var typeDefinition in moduleDefinition.Types)
+            BuildClassModels(moduleDefinition.Types);
+            return this;
+        }
+
+        private void BuildClassModels(Mono.Collections.Generic.Collection<TypeDefinition> typeDefinitions)
+        {
+            foreach (var typeDefinition in typeDefinitions)
             {
                 if (!typeDefinition.IsClass
                     || typeDefinition.FullName.StartsWith("<")
@@ -79,12 +84,15 @@ namespace NewRelic.Agent.MultiverseScanner.Models
                     continue;
                 }
 
-                var classModel = new ClassModel(typeDefinition.FullName, GetAccessLevel(typeDefinition));
+                //Build nested classes/methods.
+                BuildClassModels(typeDefinition.NestedTypes);
+
+                // Cecil uses a / to indicated a nested type while the profiler/XML uses +
+                var correctedClassName = typeDefinition.FullName.Replace('/', '+');
+                var classModel = new ClassModel(correctedClassName, GetAccessLevel(typeDefinition));
                 BuildMethodModels(classModel, typeDefinition);
                 ClassModels.Add(classModel.Name, classModel);
             }
-
-            return this;
         }
 
         private string GetAccessLevel(TypeDefinition typeDefinition)
@@ -97,7 +105,6 @@ namespace NewRelic.Agent.MultiverseScanner.Models
             {
                 return "private";
             }
-
 
             return "";
         }
