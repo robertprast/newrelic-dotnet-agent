@@ -18,7 +18,7 @@ namespace NewRelic.Agent.ConsoleScanner
 {
     public class Program
     {
-        private static bool _writeLogs = true;
+        private static bool _writeLogs = Convert.ToBoolean(Environment.GetEnvironmentVariable("MVS_ENABLE_LOG"));
 
         private static List<InstrumentationReport> _instrumentationReports = new List<InstrumentationReport>();
         private static XmlSerializer _xmlSerializer = new XmlSerializer(typeof(Extension));
@@ -26,6 +26,7 @@ namespace NewRelic.Agent.ConsoleScanner
 
         public static void Main(string[] args)
         {
+            Console.WriteLine("Starting ConsoleScanner");
             if (args.Length != 2 || string.IsNullOrWhiteSpace(args[0]) || string.IsNullOrWhiteSpace(args[1]))
             {
                 WriteLineToConsole("ERROR Missing argument: Must supply path to configuration and report files.");
@@ -61,7 +62,8 @@ namespace NewRelic.Agent.ConsoleScanner
 
             // not really needed for normal operations.
             //PrintReportToConsole();
-         }
+            Console.WriteLine("Exiting ConsoleScanner");
+        }
 
         public static void ProcessAssemblies(ScannerConfiguration configuration)
         {
