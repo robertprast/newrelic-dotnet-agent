@@ -5,23 +5,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Mono.Cecil;
 
 namespace NewRelic.Agent.MultiverseScanner.Models
 {
     public class AssemblyModel
     {
-        private const string SystemLowercase = @"^System.[a-z\d]+";
-        private const string System1NestLowercase = @"^System.[A-Z][A-Za-z\d]+.[a-z\d]+";
-        private const string System2NestLowercase = @"^System.[A-Z][A-Za-z\d]+.[A-Z][A-Za-z\d]+.[a-z\d]+";
-        private const string System3NestLowercase = @"^System.[A-Z][A-Za-z\d]+.[A-Z][A-Za-z\d]+.[A-Z][A-Za-z\d]+.[a-z\d]+";
-
-        private const string ObsLowercase = @"^[a-z\d]+.[a-z\d]+";
-        private const string Obs1NestLowercase = @"^[a-z\d]+.[a-z\d]+.[a-z\d]+";
-        private const string Obs2NestLowercase = @"^[a-z\d]+.[a-z\d]+.[a-z\d]+.[a-z\d]+";
-        private const string Obs3NestLowercase = @"^[a-z\d]+.[a-z\d]+.[a-z\d]+.[a-z\d]+.[a-z\d]+";
-
         private static string[] _nugetDataDirectories;
 
         private static Dictionary<string, ModuleDefinition> _baseModuleDefinitions;
@@ -64,34 +53,22 @@ namespace NewRelic.Agent.MultiverseScanner.Models
 
         private void BuildClassModels(Mono.Collections.Generic.Collection<TypeDefinition> typeDefinitions)
         {
+            var splitAssemblyName = AssemblyName.Split('.');
             foreach (var typeDefinition in typeDefinitions)
             {
-                if (!typeDefinition.IsClass
-                    || typeDefinition.FullName.StartsWith("<")
-                    || typeDefinition.FullName.StartsWith("Dotfuscator")
-                    || typeDefinition.FullName.StartsWith("System.Reflection")
-                    || typeDefinition.FullName.StartsWith("Microsoft.Win32")
-                    || Regex.Match(typeDefinition.FullName, SystemLowercase, RegexOptions.Compiled).Success
-                    || Regex.Match(typeDefinition.FullName, System1NestLowercase, RegexOptions.Compiled).Success
-                    || Regex.Match(typeDefinition.FullName, System2NestLowercase, RegexOptions.Compiled).Success
-                    || Regex.Match(typeDefinition.FullName, System3NestLowercase, RegexOptions.Compiled).Success
-                    || Regex.Match(typeDefinition.FullName, ObsLowercase, RegexOptions.Compiled).Success
-                    || Regex.Match(typeDefinition.FullName, Obs1NestLowercase, RegexOptions.Compiled).Success
-                    || Regex.Match(typeDefinition.FullName, Obs2NestLowercase, RegexOptions.Compiled).Success
-                    || Regex.Match(typeDefinition.FullName, Obs3NestLowercase, RegexOptions.Compiled).Success
+                if (typeDefinition.IsClass
+                    && (typeDefinition.FullName.StartsWith(AssemblyName) || typeDefinition.FullName.StartsWith(splitAssemblyName[0]))
                     )
                 {
-                    continue;
+                    //Build nested classes/methods.
+                    BuildClassModels(typeDefinition.NestedTypes);
+
+                    // Cecil uses a / to indicated a nested type while the profiler/XML uses +
+                    var correctedClassName = typeDefinition.FullName.Replace('/', '+');
+                    var classModel = new ClassModel(correctedClassName, GetAccessLevel(typeDefinition));
+                    BuildMethodModels(classModel, typeDefinition);
+                    ClassModels.Add(classModel.Name, classModel);
                 }
-
-                //Build nested classes/methods.
-                BuildClassModels(typeDefinition.NestedTypes);
-
-                // Cecil uses a / to indicated a nested type while the profiler/XML uses +
-                var correctedClassName = typeDefinition.FullName.Replace('/', '+');
-                var classModel = new ClassModel(correctedClassName, GetAccessLevel(typeDefinition));
-                BuildMethodModels(classModel, typeDefinition);
-                ClassModels.Add(classModel.Name, classModel);
             }
         }
 
@@ -132,13 +109,13 @@ namespace NewRelic.Agent.MultiverseScanner.Models
         private List<MethodDefinition> GetBaseTypeMethods(TypeReference baseType)
         {
             var baseAssemblyName = baseType?.Scope?.Name;
+            if (string.IsNullOrWhiteSpace(baseAssemblyName))
+            {
+                return new List<MethodDefinition>();
+            }
+
             if (!_baseModuleDefinitions.TryGetValue(baseAssemblyName, out var moduleDefinition))
             {
-                if (string.IsNullOrWhiteSpace(baseAssemblyName))
-                {
-                    return new List<MethodDefinition>();
-                }
-
                 var baseAssemblyDir = _nugetDataDirectories.FirstOrDefault(d => new DirectoryInfo(d).Name.ToLower().StartsWith(baseAssemblyName.ToLower()));
                 if (string.IsNullOrWhiteSpace(baseAssemblyDir))
                 {
