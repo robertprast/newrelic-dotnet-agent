@@ -4,14 +4,16 @@
 
 using NewRelic.Agent.IntegrationTests.Shared;
 using System.Collections.Generic;
-using System.Data;
+//using System.Data;
 using System.Data.Odbc;
 using System.Data.OleDb;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Data;
 
 namespace BasicMvcApplication.Controllers
 {
@@ -34,7 +36,7 @@ namespace BasicMvcApplication.Controllers
                 using (var command = new SqlCommand("SELECT * FROM NewRelic.dbo.TeamMembers WHERE FirstName = 'John'", connection))
                 {
 
-                    using (var reader = command.ExecuteReader())
+                    using (var reader = command.ExecuteReader(CommandBehavior.Default))
                     {
                         while (reader.Read())
                         {

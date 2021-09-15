@@ -46,7 +46,7 @@ SPDX-License-Identifier: Apache-2.0
 
       <!-- MS SQL flagship data access driver -->
       <match assemblyName="Microsoft.Data.SqlClient" className="Microsoft.Data.SqlClient.SqlCommand">
-        <exactMethodMatcher methodName="ExecuteReader" parameters="System.Data.CommandBehavior" />
+        <exactMethodMatcher methodName="ExecuteReader" parameters="System.Data.CommandBehavior,System.String" />
         <exactMethodMatcher methodName="ExecuteNonQuery" />
         <exactMethodMatcher methodName="ExecuteScalar" />
         <exactMethodMatcher methodName="ExecuteXmlReader" />
