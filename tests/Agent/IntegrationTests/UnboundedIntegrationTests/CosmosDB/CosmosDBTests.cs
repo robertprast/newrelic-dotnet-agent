@@ -9,10 +9,10 @@ using Xunit.Abstractions;
 
 namespace NewRelic.Agent.UnboundedIntegrationTests.MongoDB
 {
-    abstract public class CosmosDBTests<T> : NewRelicIntegrationTest<T>
+    public abstract class CosmosDBTests<T> : NewRelicIntegrationTest<T>
         where T : RemoteServiceFixtures.CosmosDBApplicationFixture
     {
-        private readonly RemoteServiceFixtures.MongoDB2_6ApplicationFixture _fixture;
+        private readonly RemoteServiceFixtures.CosmosDBApplicationFixture _fixture;
 
         public CosmosDBTests(T fixture, ITestOutputHelper output)  : base(fixture)
         {
@@ -20,25 +20,16 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.MongoDB
             _fixture.TestLogger = output;
             _fixture.Actions
             (
-
                 exerciseApplication: () =>
                 {
-                    _fixture.CreateCollection();
-                    _fixture.CreateCollectionAsync();
-                    _fixture.DropCollection();
-                    _fixture.DropCollectionAsync();
-                    _fixture.ListCollections();
-                    _fixture.ListCollectionsAsync();
-                    _fixture.RenameCollection();
-                    _fixture.RenameCollectionAsync();
-                    _fixture.RunCommand();
-                    _fixture.RunCommandAsync();
+                    _fixture.SampleAction();
                 }
             );
 
             _fixture.Initialize();
         }
 
+        // TODO: modify to make sense for CosmosDB
         [Fact]
         public void CheckForDatastoreInstanceMetrics()
         {
@@ -47,82 +38,11 @@ namespace NewRelic.Agent.UnboundedIntegrationTests.MongoDB
             Assert.NotNull(m);
         }
 
+        // TODO: modify to make sense for CosmosDB
         [Fact]
         public void CreateCollection()
         {
             var m = _fixture.AgentLog.GetMetricByName("Datastore/statement/MongoDB/createTestCollection/CreateCollection");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void CreateCollectionAsync()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/statement/MongoDB/createTestCollectionAsync/CreateCollectionAsync");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void DropCollection()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/statement/MongoDB/dropTestCollection/DropCollection");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void DropCollectionAsync()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/statement/MongoDB/dropTestCollectionAsync/DropCollectionAsync");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void ListCollections()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/operation/MongoDB/ListCollections");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void ListCollectionsAsync()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/operation/MongoDB/ListCollectionsAsync");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void RenameCollection()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/operation/MongoDB/RenameCollection");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void RenameCollectionAsync()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/operation/MongoDB/RenameCollectionAsync");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void RunCommand()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/operation/MongoDB/RunCommand");
-
-            Assert.NotNull(m);
-        }
-
-        [Fact]
-        public void RunCommandAsync()
-        {
-            var m = _fixture.AgentLog.GetMetricByName("Datastore/operation/MongoDB/RunCommandAsync");
 
             Assert.NotNull(m);
         }
