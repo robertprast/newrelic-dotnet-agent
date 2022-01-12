@@ -5,7 +5,9 @@
 #pragma once
 #include <string>
 #include <memory>
+#ifndef PAL_STDCPP_COMPAT
 #include <atlcomcli.h>
+#endif
 #include "../Common/Macros.h"
 #include "../Sicily/codegen/ITokenizer.h"
 

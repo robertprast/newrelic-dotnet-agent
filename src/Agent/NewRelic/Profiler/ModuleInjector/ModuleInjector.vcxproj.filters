@@ -4,5 +4,9 @@
     <ClInclude Include="ModuleInjector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="IModule.h" />
+    <ClInclude Include="UnixModuleInjector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)newrelic-icon.png" />
   </ItemGroup>
 </Project>
