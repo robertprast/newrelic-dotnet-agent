@@ -13,9 +13,8 @@ namespace NewRelic.Providers.Wrapper.LoggingMetrics
 {
     public class Log4netWrapper : IWrapper
     {
-        private static Func<object, string> _getRenderedMessage;
         private static Func<object, object> _getLogLevel;
-
+        private static Func<object, string> _getRenderedMessage;
 
         public bool IsTransactionRequired => false;
 
@@ -32,17 +31,20 @@ namespace NewRelic.Providers.Wrapper.LoggingMetrics
             var loggingEvent = instrumentedMethodCall.MethodCall.MethodArguments[0];
 
             var getLogLvelFunc = _getLogLevel ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<object>(loggingEvent.GetType(), "Level");
-            var logLevel = _getLogLevel(loggingEvent).ToString(); // Level class has a ToString override we can use.
+            var logLevel = getLogLvelFunc(loggingEvent).ToString(); // Level class has a ToString override we can use.
 
             var getRenderedMessageFunc = _getRenderedMessage ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<string>(loggingEvent.GetType(), "RenderedMessage");
             var renderedMessage = getRenderedMessageFunc(loggingEvent);
 
             var logLineSize = renderedMessage.Length * sizeof(Char);
-
             var xapi = agent.GetExperimentalApi();
-            xapi.RecordLogMessage(logLevel, renderedMessage ?? "MESSAGE WAS NULL");
             xapi.IncrementLogLinesCount(logLevel);
             xapi.UpdateLogSize(logLevel, logLineSize);
+
+            if (transaction != null && !string.IsNullOrWhiteSpace(renderedMessage))
+            {
+                xapi.RecordLogMessage(logLevel, renderedMessage);
+            }
 
             return Delegates.NoOp;
         }
