@@ -788,7 +788,6 @@ namespace NewRelic.Agent.Core.WireModels
                 return BuildMetric(_metricNameService, proposedName, null, data);
             }
 
-
             private MetricWireModel TryBuildSupportabilityDistributedTraceMetric(string proposedName, int count = 1) =>
                 BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(count));
 
@@ -955,6 +954,18 @@ namespace NewRelic.Agent.Core.WireModels
             }
 
             #endregion Span builders
+
+            public MetricWireModel TryBuildLoggingMetricsLinesCountMetric(string logLevel, int count)
+            {
+                var proposedName = MetricNames.GetLoggingMetricsLinesName(logLevel);
+                return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(count));
+            }
+
+            public MetricWireModel TryBuildLoggingMetricsSizeMetric(string logLevel, int size)
+            {
+                var proposedName = MetricNames.GetLoggingMetricsLinesName(logLevel);
+                return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
+            }
         }
     }
 }

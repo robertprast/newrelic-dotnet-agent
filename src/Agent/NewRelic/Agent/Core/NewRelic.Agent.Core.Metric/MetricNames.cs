@@ -479,10 +479,14 @@ namespace NewRelic.Agent.Core.Metric
         #region Supportability
 
         private const string Supportability = "Supportability";
-        private const string SupportabilityDotnetPs = Supportability + PathSeparator + "Dotnet" + PathSeparator;
+        private const string Dotnet = "Dotnet";
+        private const string SupportabilityDotnetPs = Supportability + PathSeparator + Dotnet + PathSeparator;
         private const string SupportabilityPs = Supportability + PathSeparator;
         private const string SupportabilityNetFrameworkVersionPs = SupportabilityDotnetPs + "NetFramework" + PathSeparator;
         private const string SupportabilityNetCoreVersionPs = SupportabilityDotnetPs + "NetCore" + PathSeparator;
+        private const string LoggingMetrics = "Logging";
+        private const string LoggingMetricsDotnetLines = LoggingMetrics + PathSeparator + Dotnet + PathSeparator + "lines" + PathSeparator;
+        private const string LoggingMetricsDotnetSize = LoggingMetrics + PathSeparator + Dotnet + PathSeparator + "size" + PathSeparator;
 
         // Metrics
         // NOTE: This metric is REQUIRED by the collector (it is used as a heartbeat)
@@ -1008,5 +1012,19 @@ namespace NewRelic.Agent.Core.Metric
         }
 
         #endregion Performance Metrics
+
+        #region Logging Metrics
+
+        public static string GetLoggingMetricsLinesName(string logLvel)
+        {
+            return LoggingMetricsDotnetLines + logLvel;
+        }
+
+        public static string GetLoggingMetricsSizeName(string logLvel)
+        {
+            return LoggingMetricsDotnetSize + logLvel;
+        }
+
+        #endregion Logging Metrics
     }
 }

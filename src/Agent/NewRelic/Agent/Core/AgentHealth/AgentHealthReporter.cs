@@ -21,6 +21,9 @@ namespace NewRelic.Agent.Core.AgentHealth
 {
     public class AgentHealthReporter : DisposableService, IAgentHealthReporter
     {
+        private readonly ConcurrentDictionary<string, InterlockedCounter> _logLinesCountByLevel = new ConcurrentDictionary<string, InterlockedCounter>();
+        private readonly ConcurrentDictionary<string, InterlockedCounter> _logLinesSzieByLevel = new ConcurrentDictionary<string, InterlockedCounter>();
+
         private static readonly TimeSpan _timeBetweenExecutions = TimeSpan.FromMinutes(1);
 
         private readonly IMetricBuilder _metricBuilder;
@@ -540,6 +543,7 @@ namespace NewRelic.Agent.Core.AgentHealth
             ReportDotnetVersion();
             ReportAgentInfo();
             CollectInfiniteTracingMetrics();
+            CollectLoggingMetrics();
         }
 
         public void RegisterPublishMetricHandler(PublishMetricDelegate publishMetricDelegate)
@@ -609,6 +613,51 @@ namespace NewRelic.Agent.Core.AgentHealth
                 LogAction = logAction;
                 Message = message;
             }
+        }
+
+
+
+        public void CollectLoggingMetrics()
+        {
+            /*
+             * /Logging/DotNet/lines/INFO
+             * /Logging/DotNet/size/INFO
+             */
+
+            foreach (var logLinesCounter in _logLinesCountByLevel)
+            {
+                if (TryGetCount(logLinesCounter.Value, out var linesCount))
+                {
+                    TrySend(_metricBuilder.TryBuildLoggingMetricsLinesCountMetric(logLinesCounter.Key, linesCount));
+                }
+            }
+
+            foreach (var logsSizeCounter in _logLinesSzieByLevel)
+            {
+                if (TryGetCount(logsSizeCounter.Value, out var linesSzie))
+                {
+                    TrySend(_metricBuilder.TryBuildLoggingMetricsSizeMetric(logsSizeCounter.Key, linesSzie));
+                }
+            }
+        }
+
+        public void IncrementLogLinesCount(string logLevel)
+        {
+            var normalizedLevel = logLevel.ToUpper();
+            _logLinesCountByLevel.TryAdd(normalizedLevel, new InterlockedCounter());
+            _logLinesCountByLevel[normalizedLevel].Increment();
+        }
+
+        public void UpdateLogSize(string logLevel, int logLineSize)
+        {
+            var normalizedLevel = logLevel.ToUpper();
+            _logLinesSzieByLevel.TryAdd(normalizedLevel, new InterlockedCounter());
+            _logLinesSzieByLevel[normalizedLevel].Add(logLineSize);
+        }
+
+        public void RecordLogMessage(string logLevel, string logMessage)
+        {
+            Log.Debug($"LOG {logLevel} \n\t{logMessage}");
         }
     }
 }
