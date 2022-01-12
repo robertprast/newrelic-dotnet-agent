@@ -3,7 +3,6 @@
 
 #pragma once
 #include <corprof.h>
-#include <CorHdr.h>
 #include "../Logging/Logger.h"
 #include "../Common/OnDestruction.h"
 #include "../ModuleInjector/IModule.h"
