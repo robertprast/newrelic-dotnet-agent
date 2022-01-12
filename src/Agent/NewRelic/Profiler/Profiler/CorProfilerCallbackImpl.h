@@ -24,15 +24,17 @@
 #include <string>
 #include <thread>
 #include <utility>
-#include "../ModuleInjector/ModuleInjector.h"
-#include "Module.h"
 
 #ifdef PAL_STDCPP_COMPAT
 #include "UnixSystemCalls.h"
+#include "../ModuleInjector/UnixModuleInjector.h"
 #else
 #include "SystemCalls.h"
 #include <shellapi.h>
+#include "../ModuleInjector/ModuleInjector.h"
 #endif
+#include "Module.h"
+
 
 namespace NewRelic {
 namespace Profiler {
