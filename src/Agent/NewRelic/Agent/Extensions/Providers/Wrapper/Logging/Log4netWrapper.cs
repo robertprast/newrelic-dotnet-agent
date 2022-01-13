@@ -7,10 +7,11 @@ using NewRelic.Agent.Api.Experimental;
 using NewRelic.Agent.Extensions.Providers.Wrapper;
 using NewRelic.Reflection;
 
-namespace NewRelic.Providers.Wrapper.LoggingMetrics
+namespace NewRelic.Providers.Wrapper.Logging
 {
     public class Log4netWrapper : IWrapper
     {
+        private static Func<object, DateTime> _getTimestamp;
         private static Func<object, object> _getLogLevel;
         private static Func<object, string> _getRenderedMessage;
 
@@ -27,6 +28,10 @@ namespace NewRelic.Providers.Wrapper.LoggingMetrics
         {
             var loggingEvent = instrumentedMethodCall.MethodCall.MethodArguments[0];
 
+            // We can either get this in Local or UTC
+            var getTimestampFunc = _getTimestamp ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<DateTime>(loggingEvent.GetType(), "TimeStampUtc");
+            var timestamp = getTimestampFunc(loggingEvent);
+
             var getLogLvelFunc = _getLogLevel ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<object>(loggingEvent.GetType(), "Level");
             var logLevel = getLogLvelFunc(loggingEvent).ToString(); // Level class has a ToString override we can use.
 
@@ -41,7 +46,7 @@ namespace NewRelic.Providers.Wrapper.LoggingMetrics
             if (transaction != null && !string.IsNullOrWhiteSpace(renderedMessage))
             {
                 var linkingMetadata = agent.GetLinkingMetadata();
-                xapi.RecordLogMessage(logLevel, renderedMessage, linkingMetadata);
+                xapi.RecordLogMessage(timestamp, logLevel, renderedMessage, linkingMetadata);
             }
 
             return Delegates.NoOp;
