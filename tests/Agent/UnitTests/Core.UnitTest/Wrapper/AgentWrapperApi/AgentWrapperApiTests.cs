@@ -17,6 +17,7 @@ using NewRelic.Agent.Core.Segments;
 using NewRelic.Agent.Core.Segments.Tests;
 using NewRelic.Agent.Core.Timing;
 using NewRelic.Agent.Core.Transactions;
+using NewRelic.Agent.Core.Transformers;
 using NewRelic.Agent.Core.Transformers.TransactionTransformer;
 using NewRelic.Agent.Core.Utilities;
 using NewRelic.Agent.Core.Wrapper.AgentWrapperApi.Builders;
@@ -84,6 +85,8 @@ namespace NewRelic.Agent.Core.Wrapper.AgentWrapperApi
         private IAttributeDefinitionService _attribDefSvc;
         private IAttributeDefinitions _attribDefs => _attribDefSvc.AttributeDefs;
 
+        private ILoggingMetricsEventTransformer _loggingMetricsEventTransformer;
+
         private const string DistributedTraceHeaderName = "newrelic";
         private const string ReferrerTripId = "referrerTripId";
         private const string ReferrerPathHash = "referrerPathHash";
@@ -136,7 +139,8 @@ namespace NewRelic.Agent.Core.Wrapper.AgentWrapperApi
             _traceMetadataFactory = Mock.Create<ITraceMetadataFactory>();
             _errorService = new ErrorService(_configurationService);
             _attribDefSvc = new AttributeDefinitionService((f) => new AttributeDefinitions(f));
-            _agent = new Agent(_transactionService, _transactionTransformer, _threadPoolStatic, _transactionMetricNameMaker, _pathHashMaker, _catHeaderHandler, _distributedTracePayloadHandler, _syntheticsHeaderHandler, _transactionFinalizer, _browserMonitoringPrereqChecker, _browserMonitoringScriptMaker, _configurationService, _agentHealthReporter, _agentTimerService, _metricNameService, _traceMetadataFactory, _catMetrics);
+            _loggingMetricsEventTransformer = Mock.Create<ILoggingMetricsEventTransformer>();
+            _agent = new Agent(_transactionService, _transactionTransformer, _threadPoolStatic, _transactionMetricNameMaker, _pathHashMaker, _catHeaderHandler, _distributedTracePayloadHandler, _syntheticsHeaderHandler, _transactionFinalizer, _browserMonitoringPrereqChecker, _browserMonitoringScriptMaker, _configurationService, _agentHealthReporter, _agentTimerService, _metricNameService, _traceMetadataFactory, _catMetrics, _loggingMetricsEventTransformer);
         }
 
         private class CallStackManagerFactory : ICallStackManagerFactory
@@ -594,7 +598,7 @@ namespace NewRelic.Agent.Core.Wrapper.AgentWrapperApi
         public void AcceptDistributedTraceHeaders__ReportsSupportabilityMetric_NullPayload()
         {
             _distributedTracePayloadHandler = new DistributedTracePayloadHandler(_configurationService, _agentHealthReporter, new AdaptiveSampler());
-            _agent = new Agent(_transactionService, _transactionTransformer, _threadPoolStatic, _transactionMetricNameMaker, _pathHashMaker, _catHeaderHandler, _distributedTracePayloadHandler, _syntheticsHeaderHandler, _transactionFinalizer, _browserMonitoringPrereqChecker, _browserMonitoringScriptMaker, _configurationService, _agentHealthReporter, _agentTimerService, _metricNameService, _traceMetadataFactory, _catMetrics);
+            _agent = new Agent(_transactionService, _transactionTransformer, _threadPoolStatic, _transactionMetricNameMaker, _pathHashMaker, _catHeaderHandler, _distributedTracePayloadHandler, _syntheticsHeaderHandler, _transactionFinalizer, _browserMonitoringPrereqChecker, _browserMonitoringScriptMaker, _configurationService, _agentHealthReporter, _agentTimerService, _metricNameService, _traceMetadataFactory, _catMetrics, _loggingMetricsEventTransformer);
             SetupTransaction();
 
             Mock.Arrange(() => _configurationService.Configuration.DistributedTracingEnabled).Returns(true);

@@ -124,6 +124,7 @@ namespace NewRelic.Agent.Core.DependencyInjection
             container.Register<ICustomEventAggregator, CustomEventAggregator>();
             container.Register<ISpanEventAggregator, SpanEventAggregator>();
             container.Register<ISpanEventAggregatorInfiniteTracing, SpanEventAggregatorInfiniteTracing>();
+            container.Register<ILoggingMetricsEventAggregator, LoggingMetricsEventAggregator>();
             container.Register<IGrpcWrapper<SpanBatch, RecordStatus>, SpanBatchGrpcWrapper>();
             container.Register<IDelayer, Delayer>();
             container.Register<IDataStreamingService<Span, SpanBatch, RecordStatus>, SpanStreamingService>();
@@ -136,6 +137,7 @@ namespace NewRelic.Agent.Core.DependencyInjection
 #if NET45
 			container.RegisterFactory<IEnumerable<IOutOfBandMetricSource>>(container.ResolveAll<IOutOfBandMetricSource>);
 #endif
+            container.Register<ILoggingMetricsEventTransformer, LoggingMetricsEventTransformer>();
             container.Register<IThreadPoolStatic, ThreadPoolStatic>();
             container.Register<ITransactionTransformer, TransactionTransformer>();
             container.Register<ICustomEventTransformer, CustomEventTransformer>();

@@ -12,6 +12,7 @@ using NewRelic.Agent.Core.Metric;
 using NewRelic.Agent.Core.Metrics;
 using NewRelic.Agent.Core.Segments;
 using NewRelic.Agent.Core.Transactions;
+using NewRelic.Agent.Core.Transformers;
 using NewRelic.Agent.Core.Transformers.TransactionTransformer;
 using NewRelic.Agent.Core.Utilities;
 using NewRelic.Agent.Core.Wrapper.AgentWrapperApi.Builders;
@@ -54,6 +55,7 @@ namespace NewRelic.Agent.Core
         internal readonly IMetricNameService _metricNameService;
         private readonly ICATSupportabilityMetricCounters _catMetricCounters;
         private readonly Api.ITraceMetadataFactory _traceMetadataFactory;
+        private readonly ILoggingMetricsEventTransformer _loggingMetricsEventTransformer;
         private Extensions.Logging.ILogger _logger;
 
         public Agent(ITransactionService transactionService, ITransactionTransformer transactionTransformer,
@@ -62,7 +64,8 @@ namespace NewRelic.Agent.Core
             ISyntheticsHeaderHandler syntheticsHeaderHandler, ITransactionFinalizer transactionFinalizer,
             IBrowserMonitoringPrereqChecker browserMonitoringPrereqChecker, IBrowserMonitoringScriptMaker browserMonitoringScriptMaker,
             IConfigurationService configurationService, IAgentHealthReporter agentHealthReporter, IAgentTimerService agentTimerService,
-            IMetricNameService metricNameService, Api.ITraceMetadataFactory traceMetadataFactory, ICATSupportabilityMetricCounters catMetricCounters)
+            IMetricNameService metricNameService, Api.ITraceMetadataFactory traceMetadataFactory, ICATSupportabilityMetricCounters catMetricCounters,
+            ILoggingMetricsEventTransformer loggingMetricsEventTransformer)
         {
             _transactionService = transactionService;
             _transactionTransformer = transactionTransformer;
@@ -81,6 +84,7 @@ namespace NewRelic.Agent.Core
             _metricNameService = metricNameService;
             _traceMetadataFactory = traceMetadataFactory;
             _catMetricCounters = catMetricCounters;
+            _loggingMetricsEventTransformer = loggingMetricsEventTransformer;
 
             Instance = this;
         }
@@ -400,9 +404,10 @@ namespace NewRelic.Agent.Core
             _agentHealthReporter.ReportSupportabilityCountMetric(metricName, count);
         }
 
-        public void RecordLogMessage(string logLevel, string logMessage)
+        public void RecordLogMessage(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
         {
-            _agentHealthReporter.RecordLogMessage(logLevel, logMessage);
+            _agentHealthReporter.RecordLogMessage(logLevel, logMessage, linkingMetadata);
+            _loggingMetricsEventTransformer.Transform(logLevel, logMessage, linkingMetadata);
         }
 
         public void IncrementLogLinesCount(string logLevel)

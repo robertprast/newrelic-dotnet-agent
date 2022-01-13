@@ -17,6 +17,7 @@ using NewRelic.Agent.Core.Metric;
 using NewRelic.Agent.Core.Metrics;
 using NewRelic.Agent.Core.Timing;
 using NewRelic.Agent.Core.Transactions;
+using NewRelic.Agent.Core.Transformers;
 using NewRelic.Agent.Core.Transformers.TransactionTransformer;
 using NewRelic.Agent.Core.Utilities;
 using NewRelic.Agent.Core.Wrapper.AgentWrapperApi.Builders;
@@ -84,7 +85,7 @@ namespace NewRelic.Agent.Core.CrossAgentTests
 
             var agentHealthReporter = Mock.Create<IAgentHealthReporter>();
 
-            _agent = new Agent(transactionBuilderService, Mock.Create<ITransactionTransformer>(), Mock.Create<IThreadPoolStatic>(), _transactionMetricNameMaker, _pathHashMaker, _catHeaderHandler, Mock.Create<IDistributedTracePayloadHandler>(), _syntheticsHeaderHandler, Mock.Create<ITransactionFinalizer>(), Mock.Create<IBrowserMonitoringPrereqChecker>(), Mock.Create<IBrowserMonitoringScriptMaker>(), _configurationService, agentHealthReporter, Mock.Create<IAgentTimerService>(), Mock.Create<IMetricNameService>(), new TraceMetadataFactory(new AdaptiveSampler()), catSupportabilityCounters);
+            _agent = new Agent(transactionBuilderService, Mock.Create<ITransactionTransformer>(), Mock.Create<IThreadPoolStatic>(), _transactionMetricNameMaker, _pathHashMaker, _catHeaderHandler, Mock.Create<IDistributedTracePayloadHandler>(), _syntheticsHeaderHandler, Mock.Create<ITransactionFinalizer>(), Mock.Create<IBrowserMonitoringPrereqChecker>(), Mock.Create<IBrowserMonitoringScriptMaker>(), _configurationService, agentHealthReporter, Mock.Create<IAgentTimerService>(), Mock.Create<IMetricNameService>(), new TraceMetadataFactory(new AdaptiveSampler()), catSupportabilityCounters, Mock.Create<ILoggingMetricsEventTransformer>());
 
             _attribDefSvc = new AttributeDefinitionService((f) => new AttributeDefinitions(f));
             _transactionAttributeMaker = new TransactionAttributeMaker(_configurationService, _attribDefSvc);

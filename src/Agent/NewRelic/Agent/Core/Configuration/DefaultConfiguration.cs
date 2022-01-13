@@ -1778,6 +1778,20 @@ namespace NewRelic.Agent.Core.Configuration
 
         #endregion
 
+        #region Logging Metrics
+
+        public virtual bool LoggingMetricsEventCollectorEnabled
+        {
+            get
+            {
+                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.errorCollector.enabled);
+                //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
+                return true;
+            }
+        }
+
+        #endregion
+
         private bool? _diagnosticsCaptureAgentTiming;
         public bool DiagnosticsCaptureAgentTiming
         {
