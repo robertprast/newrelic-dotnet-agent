@@ -1,6 +1,8 @@
 // Copyright 2020 New Relic, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System.Collections.Generic;
+
 namespace NewRelic.Agent.Api.Experimental
 {
     /// <summary>
@@ -16,7 +18,7 @@ namespace NewRelic.Agent.Api.Experimental
         /// <param name="count">Defaults to 1.0f</param>
         void RecordSupportabilityMetric(string metricName, int count = 1);
         
-        void RecordLogMessage(string logLevel, string logessage);
+        void RecordLogMessage(string logLevel, string logessage, IDictionary<string, string> linkingMetadata);
 
         void IncrementLogLinesCount(string logLevel);
 

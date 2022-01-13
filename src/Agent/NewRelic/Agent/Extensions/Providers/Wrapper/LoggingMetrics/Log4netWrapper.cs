@@ -2,12 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using System.Net;
 using NewRelic.Agent.Api;
 using NewRelic.Agent.Api.Experimental;
 using NewRelic.Agent.Extensions.Providers.Wrapper;
 using NewRelic.Reflection;
-using NewRelic.SystemExtensions.Collections;
 
 namespace NewRelic.Providers.Wrapper.LoggingMetrics
 {
@@ -23,7 +21,6 @@ namespace NewRelic.Providers.Wrapper.LoggingMetrics
         public CanWrapResponse CanWrap(InstrumentedMethodInfo methodInfo)
         {
             return new CanWrapResponse(WrapperName.Equals(methodInfo.RequestedWrapperName));
-
         }
 
         public AfterWrappedMethodDelegate BeforeWrappedMethod(InstrumentedMethodCall instrumentedMethodCall, IAgent agent, ITransaction transaction)
@@ -43,7 +40,8 @@ namespace NewRelic.Providers.Wrapper.LoggingMetrics
 
             if (transaction != null && !string.IsNullOrWhiteSpace(renderedMessage))
             {
-                xapi.RecordLogMessage(logLevel, renderedMessage);
+                var linkingMetadata = agent.GetLinkingMetadata();
+                xapi.RecordLogMessage(logLevel, renderedMessage, linkingMetadata);
             }
 
             return Delegates.NoOp;

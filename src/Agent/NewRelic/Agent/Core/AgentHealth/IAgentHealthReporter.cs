@@ -6,6 +6,7 @@ using NewRelic.Agent.Core.SharedInterfaces;
 using NewRelic.Agent.Core.Transformers.TransactionTransformer;
 using NewRelic.Agent.Extensions.Providers.Wrapper;
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace NewRelic.Agent.Core.AgentHealth
@@ -139,7 +140,7 @@ namespace NewRelic.Agent.Core.AgentHealth
         void ReportInfiniteTracingSpanGrpcTimeout();
         void ReportInfiniteTracingSpanQueueSize(int queueSize);
 
-        void RecordLogMessage(string logLevel, string logMessage);
+        void RecordLogMessage(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata);
         void IncrementLogLinesCount(string logLevel);
         void UpdateLogSize(string logLevel, int logLineSize);
     }

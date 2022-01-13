@@ -655,7 +655,7 @@ namespace NewRelic.Agent.Core.AgentHealth
             _logLinesSzieByLevel[normalizedLevel].Add(logLineSize);
         }
 
-        public void RecordLogMessage(string logLevel, string logMessage)
+        public void RecordLogMessage(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
         {
             Log.Debug($"LOG {logLevel} \n\t{logMessage}");
         }
