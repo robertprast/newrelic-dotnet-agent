@@ -26,40 +26,39 @@ namespace NewRelic.Agent.Core.Transformers
 {
     public interface ILoggingMetricsEventTransformer
     {
-        void Transform(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata);
+        void Transform(DateTime timestamp, string logLevel, string logMessage, IDictionary<string, string> linkingMetadata);
     }
 
-    class LoggingMetricsEventTransformer : ILoggingMetricsEventTransformer
+    class LoggingEventTransformer : ILoggingMetricsEventTransformer
     {
-        private readonly ILoggingMetricsEventAggregator _loggingMetricsEventAggregator;
+        private readonly ILoggingEventAggregator _loggingEventAggregator;
         private readonly IMetricNameService _metricNameService;
         private readonly IConfigurationService _configurationService;
         private readonly IAgentTimerService _agentTimerService;
         private readonly IAdaptiveSampler _adaptiveSampler;
 
-        public LoggingMetricsEventTransformer(ILoggingMetricsEventAggregator loggingMetricsEventAggregator, IMetricNameService metricNameService, IConfigurationService configurationService, IAgentTimerService agentTimerService, IAdaptiveSampler adaptiveSampler)
+        public LoggingEventTransformer(ILoggingEventAggregator loggingEventAggregator, IMetricNameService metricNameService, IConfigurationService configurationService, IAgentTimerService agentTimerService, IAdaptiveSampler adaptiveSampler)
         {
-            _loggingMetricsEventAggregator = loggingMetricsEventAggregator;
+            _loggingEventAggregator = loggingEventAggregator;
             _metricNameService = metricNameService;
             _configurationService = configurationService;
             _agentTimerService = agentTimerService;
             _adaptiveSampler = adaptiveSampler;
         }
 
-        public void Transform(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
+        public void Transform(DateTime timestamp, string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
         {
             if (string.IsNullOrWhiteSpace(logLevel) || string.IsNullOrWhiteSpace(logMessage))
             {
                 return;
             }
 
-            // make a logging event, build event with metadata eventually
-            // Fix timestamp - get from instrumentation!!
-            var wiremodel = new LoggingMetricsEventWireModel(DateTime.Now, logLevel, logMessage);
+            linkingMetadata.Add("log.level", logLevel);
 
-            // call collect
-            Log.Debug("LoggingMetricsEventTransformer transformed!");
-            // GenerateAndCollect...
+            // make a logging event, build event with metadata eventually
+            var wiremodel = new LoggingEventWireModel(timestamp, logMessage, linkingMetadata);
+
+            _loggingEventAggregator.Collect(wiremodel);
         }
     }
 }

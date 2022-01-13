@@ -813,6 +813,12 @@ namespace NewRelic.Agent.Core.Metric
             return SupportabilityInstallTypePs + installType;
         }
 
+        // Logging Events
+        private const string SupportabilityLoggingEventsPs = SupportabilityPs + "LoggingEvents" + PathSeparator;
+        public const string SupportabilityLoggingEventsSent = SupportabilityLoggingEventsPs + "TotalLoggingEventsSent";
+        public const string SupportabilityLoggingEventsCollected = SupportabilityLoggingEventsPs + "TotalLoggingEventsCollected";
+        public const string SupportabilityLoggingEventsRecollected = SupportabilityLoggingEventsPs + "TotalLoggingEventsRecollected";
+
         #endregion Supportability
 
         #region Distributed Trace Metrics

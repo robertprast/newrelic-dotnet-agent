@@ -139,9 +139,10 @@ namespace NewRelic.Agent.Core.AgentHealth
         void ReportInfiniteTracingSpanGrpcError(string status);
         void ReportInfiniteTracingSpanGrpcTimeout();
         void ReportInfiniteTracingSpanQueueSize(int queueSize);
-
-        void RecordLogMessage(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata);
         void IncrementLogLinesCount(string logLevel);
         void UpdateLogSize(string logLevel, int logLineSize);
+        void ReportLoggingEventsCollected(int count);
+        void ReportLoggingEventsRecollected(int count);
+        void ReportLoggingEventsSent(int count);
     }
 }

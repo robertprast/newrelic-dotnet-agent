@@ -1778,9 +1778,9 @@ namespace NewRelic.Agent.Core.Configuration
 
         #endregion
 
-        #region Logging Metrics
+        #region Logging Events and Metrics
 
-        public virtual bool LoggingMetricsEventCollectorEnabled
+        public virtual bool LoggingEventCollectorEnabled
         {
             get
             {
@@ -1789,6 +1789,18 @@ namespace NewRelic.Agent.Core.Configuration
                 return true;
             }
         }
+
+        public virtual bool LoggingMetricsCollectorEnabled
+        {
+            get
+            {
+                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.errorCollector.enabled);
+                //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
+                return true;
+            }
+        }
+
+        public virtual uint LoggingEventsMaximumPerPeriod { get { return 100000; } }
 
         #endregion
 

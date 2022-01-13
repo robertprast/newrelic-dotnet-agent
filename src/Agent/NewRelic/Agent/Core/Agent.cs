@@ -404,20 +404,28 @@ namespace NewRelic.Agent.Core
             _agentHealthReporter.ReportSupportabilityCountMetric(metricName, count);
         }
 
-        public void RecordLogMessage(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
+        public void RecordLogMessage(DateTime timestamp, string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
         {
-            _agentHealthReporter.RecordLogMessage(logLevel, logMessage, linkingMetadata);
-            _loggingMetricsEventTransformer.Transform(logLevel, logMessage, linkingMetadata);
+            if (_configurationService.Configuration.LoggingEventCollectorEnabled)
+            {
+                _loggingMetricsEventTransformer.Transform(timestamp, logLevel, logMessage, linkingMetadata);
+            }
         }
 
         public void IncrementLogLinesCount(string logLevel)
         {
-            _agentHealthReporter.IncrementLogLinesCount(logLevel);
+            if (_configurationService.Configuration.LoggingMetricsCollectorEnabled)
+            {
+                _agentHealthReporter.IncrementLogLinesCount(logLevel);
+            }
         }
 
         public void UpdateLogSize(string logLevel, int logLineSize)
         {
-            _agentHealthReporter.UpdateLogSize(logLevel, logLineSize);
+            if (_configurationService.Configuration.LoggingMetricsCollectorEnabled)
+            {
+                _agentHealthReporter.UpdateLogSize(logLevel, logLineSize);
+            }
         }
 
         #endregion

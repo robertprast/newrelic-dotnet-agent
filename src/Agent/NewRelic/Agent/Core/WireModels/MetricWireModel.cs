@@ -955,6 +955,8 @@ namespace NewRelic.Agent.Core.WireModels
 
             #endregion Span builders
 
+            #region Logging Events and Metrics
+
             public MetricWireModel TryBuildLoggingMetricsLinesCountMetric(string logLevel, int count)
             {
                 var proposedName = MetricNames.GetLoggingMetricsLinesName(logLevel);
@@ -966,6 +968,29 @@ namespace NewRelic.Agent.Core.WireModels
                 var proposedName = MetricNames.GetLoggingMetricsLinesName(logLevel);
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
             }
+
+            public MetricWireModel TryBuildSupportabilitLoggingEventsCollectedMetric(int loggingEventsCollected)
+            {
+                const string proposedName = MetricNames.SupportabilityLoggingEventsCollected;
+                var data = MetricDataWireModel.BuildCountData(loggingEventsCollected);
+                return BuildMetric(_metricNameService, proposedName, null, data);
+            }
+
+            public MetricWireModel TryBuildSupportabilitLoggingEventsRecollectedMetric(int loggingEventsRecollected)
+            {
+                const string proposedName = MetricNames.SupportabilityLoggingEventsRecollected;
+                var data = MetricDataWireModel.BuildCountData(loggingEventsRecollected);
+                return BuildMetric(_metricNameService, proposedName, null, data);
+            }
+
+            public MetricWireModel TryBuildSupportabilitLoggingEventsSentMetric(int loggingEventCount)
+            {
+                const string proposedName = MetricNames.SupportabilityLoggingEventsSent;
+                var data = MetricDataWireModel.BuildCountData(loggingEventCount);
+                return BuildMetric(_metricNameService, proposedName, null, data);
+            }
+
+            #endregion
         }
     }
 }

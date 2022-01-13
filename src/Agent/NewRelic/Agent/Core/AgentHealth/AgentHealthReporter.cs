@@ -616,14 +616,10 @@ namespace NewRelic.Agent.Core.AgentHealth
         }
 
 
+        #region Logging Events and Metrics
 
         public void CollectLoggingMetrics()
         {
-            /*
-             * /Logging/DotNet/lines/INFO
-             * /Logging/DotNet/size/INFO
-             */
-
             foreach (var logLinesCounter in _logLinesCountByLevel)
             {
                 if (TryGetCount(logLinesCounter.Value, out var linesCount))
@@ -655,9 +651,12 @@ namespace NewRelic.Agent.Core.AgentHealth
             _logLinesSzieByLevel[normalizedLevel].Add(logLineSize);
         }
 
-        public void RecordLogMessage(string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
-        {
-            Log.Debug($"LOG {logLevel} \n\t{logMessage}");
-        }
+        public void ReportLoggingEventsCollected(int count) => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsCollectedMetric(count));
+
+        public void ReportLoggingEventsRecollected(int count) => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsRecollectedMetric(count));
+
+        public void ReportLoggingEventsSent(int count) => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsSentMetric(count));
+
+        #endregion
     }
 }
