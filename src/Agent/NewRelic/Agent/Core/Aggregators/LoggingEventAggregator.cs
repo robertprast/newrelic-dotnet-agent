@@ -87,14 +87,19 @@ namespace NewRelic.Agent.Core.Aggregators
             // need to build the Collection model and fill with logging events and common data.
             // collection is expected to be in a list based on the format (see models)
             var loggingEvents = loggingEventWireModels.ToArray();
+
+            // matches metadata
+            var hostname = !string.IsNullOrEmpty(_configurationService.Configuration.UtilizationFullHostName)
+                ? _configurationService.Configuration.UtilizationFullHostName
+                : _configurationService.Configuration.UtilizationHostName;
+
             var modelsCollection = new LoggingEventWireModelCollection(
                 "agent-forwarded-log",
                 _configurationService.Configuration.ApplicationNames.First(),
-                _configurationService.Configuration.UtilizationHostName,
+                hostname, 
                 loggingEvents);
 
-            var listwrappedCollection = new List<LoggingEventWireModelCollection> { modelsCollection };
-            var responseStatus = DataTransportService.Send(listwrappedCollection);
+            var responseStatus = DataTransportService.Send(modelsCollection);
 
             HandleResponse(responseStatus, loggingEventWireModels);
         }
