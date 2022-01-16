@@ -1784,9 +1784,9 @@ namespace NewRelic.Agent.Core.Configuration
         {
             get
             {
-                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.errorCollector.enabled);
+                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.logSending.loggingForwarding.enabled);
                 //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
-                return true;
+                return _localConfiguration.logSending.loggingForwarding.enabled;
             }
         }
 
@@ -1794,13 +1794,20 @@ namespace NewRelic.Agent.Core.Configuration
         {
             get
             {
-                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.errorCollector.enabled);
+                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.logSending.loggingMetrics.enabled);
                 //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
-                return true;
+                return _localConfiguration.logSending.loggingMetrics.enabled;
             }
         }
 
-        public virtual uint LoggingEventsMaximumPerPeriod { get { return 100000; } }
+        public virtual uint LoggingEventsMaximumPerPeriod {
+            get
+            {
+                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.logSending.maxSamplesStored);
+                //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
+                return _localConfiguration.logSending.maxSamplesStored;
+            }
+        }
 
         #endregion
 

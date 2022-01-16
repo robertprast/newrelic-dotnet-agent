@@ -1576,6 +1576,77 @@
           </xs:complexType>
         </xs:element>
 
+
+          <xs:element name="logSending" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                  <xs:documentation>
+                      Placeholder
+                  </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                  <xs:sequence>
+                      <xs:element name="loggingMetrics" minOccurs="0" maxOccurs="1">
+                          <xs:annotation>
+                              <xs:documentation>
+                                  Placeholder. Sends logging metrics. On by default.
+                              </xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                              <xs:attribute name="enabled" type="xs:boolean" default="true">
+                                  <xs:annotation>
+                                      <xs:documentation>
+                                          Placeholder.
+                                      </xs:documentation>
+                                  </xs:annotation>
+                              </xs:attribute>
+                          </xs:complexType>
+                      </xs:element>
+
+                      <xs:element name="loggingForwarding" minOccurs="0" maxOccurs="1">
+                          <xs:annotation>
+                              <xs:documentation>
+                                  Placeholder. Sends logging metrics. On by default.
+                              </xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                              <xs:attribute name="enabled" type="xs:boolean" default="true">
+                                  <xs:annotation>
+                                      <xs:documentation>
+                                          Placeholder.
+                                      </xs:documentation>
+                                  </xs:annotation>
+                              </xs:attribute>
+                          </xs:complexType>
+                      </xs:element>
+
+                      <xs:element name="maxSamplesStored" minOccurs="0" maxOccurs="1" type="xs:unsignedInt" default="10000">
+                          <xs:annotation>
+                              <xs:documentation>
+                                  Placeholder. Sends logging metrics. On by default.
+                              </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+
+
+                  </xs:sequence>
+              </xs:complexType>
+          </xs:element>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
         <xs:element name="threadProfiling" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>

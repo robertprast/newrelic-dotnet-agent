@@ -14,9 +14,9 @@ namespace NewRelic.Agent.Core.WireModels
 
         public IList<LoggingEventWireModel> LoggingEvents { get; }
 
-        public LoggingEventWireModelCollection(string logtype, string service, string hostname, IList<LoggingEventWireModel> loggingEvents)
+        public LoggingEventWireModelCollection(string entityName, string entityType, string entityGuid, string hostname, string pluginType, IList<LoggingEventWireModel> loggingEvents)
         {
-            CommonProperties = new LoggingEventsCommonProperties(logtype, service, hostname);
+            CommonProperties = new LoggingEventsCommonProperties(entityName, entityType, entityGuid, hostname, pluginType);
             LoggingEvents = loggingEvents;
         }
     }
@@ -25,25 +25,31 @@ namespace NewRelic.Agent.Core.WireModels
     {
         public LoggingEventsCommonAttributes Attributes { get; }
 
-        public LoggingEventsCommonProperties(string logtype, string service, string hostname)
+        public LoggingEventsCommonProperties(string entityName, string entityType, string entityGuid, string hostname, string pluginType)
         {
-            Attributes = new LoggingEventsCommonAttributes(logtype, service, hostname);
+            Attributes = new LoggingEventsCommonAttributes(entityName, entityType, entityGuid, hostname, pluginType);
         }
     }
 
     public class LoggingEventsCommonAttributes
     {
-        public string Logtype { get; }
+        public string EntityName { get; }
 
-        public string Service { get; }
+        public string EntityType { get; }
+
+        public string EntityGuid { get; }
 
         public string Hostname { get; }
 
-        public LoggingEventsCommonAttributes(string logtype, string service, string hostname)
+        public string PluginType { get; }
+
+        public LoggingEventsCommonAttributes(string entityName, string entityType, string entityGuid, string hostname, string pluginType)
         {
-            Logtype = logtype;
-            Service = service;
+            EntityName = entityName;
+            EntityType = entityType;
+            EntityType = entityGuid;
             Hostname = hostname;
+            PluginType = pluginType;
         }
     }
 }

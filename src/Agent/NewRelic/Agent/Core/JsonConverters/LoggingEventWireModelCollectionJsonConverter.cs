@@ -29,12 +29,16 @@ namespace NewRelic.Agent.Core.JsonConverters
             jsonWriter.WriteStartObject();
             jsonWriter.WritePropertyName("attributes");
             jsonWriter.WriteStartObject();
-            jsonWriter.WritePropertyName("logtype");
-            jsonWriter.WriteValue(value.CommonProperties.Attributes.Logtype);
-            jsonWriter.WritePropertyName("service");
-            jsonWriter.WriteValue(value.CommonProperties.Attributes.Service);
+            jsonWriter.WritePropertyName("entity.name");
+            jsonWriter.WriteValue(value.CommonProperties.Attributes.EntityName);
+            jsonWriter.WritePropertyName("entity.type");
+            jsonWriter.WriteValue(value.CommonProperties.Attributes.EntityType);
+            jsonWriter.WritePropertyName("entity.guid");
+            jsonWriter.WriteValue(value.CommonProperties.Attributes.EntityGuid);
             jsonWriter.WritePropertyName("hostname");
             jsonWriter.WriteValue(value.CommonProperties.Attributes.Hostname);
+            jsonWriter.WritePropertyName("plugin.type");
+            jsonWriter.WriteValue(value.CommonProperties.Attributes.PluginType);
             jsonWriter.WriteEndObject();
             jsonWriter.WriteEndObject();
 
@@ -45,9 +49,11 @@ namespace NewRelic.Agent.Core.JsonConverters
                 var logEvent = value.LoggingEvents[i];
                 jsonWriter.WriteStartObject();
                 jsonWriter.WritePropertyName("timestamp");
-                jsonWriter.WriteValue(logEvent.TimeStamp.ToUnixTimeMilliseconds());
+                jsonWriter.WriteValue(logEvent.TimeStamp);
                 jsonWriter.WritePropertyName("message");
                 jsonWriter.WriteValue(logEvent.Message);
+                jsonWriter.WritePropertyName("level");
+                jsonWriter.WriteValue(logEvent.Level);
                 jsonWriter.WritePropertyName("attributes");
                 jsonWriter.WriteStartObject();
                 if (logEvent.Attributes.Count > 0)

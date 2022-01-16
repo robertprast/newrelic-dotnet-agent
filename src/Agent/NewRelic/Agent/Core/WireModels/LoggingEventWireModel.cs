@@ -10,9 +10,9 @@ namespace NewRelic.Agent.Core.WireModels
 
     {
         /// <summary>
-        /// The UTC timestamp indicating when the message was logged. 
+        /// The UTC timestamp in unix milliseconds. 
         /// </summary>
-        public DateTime TimeStamp { get; }
+        public long TimeStamp { get; }
 
         /// <summary>
         /// The log message.
@@ -20,13 +20,18 @@ namespace NewRelic.Agent.Core.WireModels
         public string Message { get; }
 
         /// <summary>
+        /// The log level.
+        /// </summary>
+        public string Level { get; }
+
+        /// <summary>
         /// Metadata from GetLinkingMetadata and instrumentation.
         /// </summary>
         public IDictionary<string, string> Attributes { get; }
 
-        public LoggingEventWireModel(DateTime timestamp, string message, IDictionary<string, string> attributes)
+        public LoggingEventWireModel(long unixTimestampMS, string message, string level, IDictionary<string, string> attributes)
         {
-            TimeStamp = timestamp;
+            TimeStamp = unixTimestampMS;
             Message = message;
             Attributes = attributes;
         }

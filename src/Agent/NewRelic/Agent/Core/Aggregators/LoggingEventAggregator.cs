@@ -26,6 +26,9 @@ namespace NewRelic.Agent.Core.Aggregators
     /// </summary>
     public class LoggingEventAggregator : AbstractAggregator<LoggingEventWireModel>, ILoggingEventAggregator
     {
+        private const String EntityType = "SERVICE";
+        private const String PluginType = "nr-dotnet-agent";
+
         private readonly IAgentHealthReporter _agentHealthReporter;
         private readonly IConfigurationService _configurationService;
 
@@ -94,10 +97,12 @@ namespace NewRelic.Agent.Core.Aggregators
                 : _configurationService.Configuration.UtilizationHostName;
 
             var modelsCollection = new LoggingEventWireModelCollection(
-                "agent-forwarded-log",
                 _configurationService.Configuration.ApplicationNames.First(),
-                hostname, 
-                loggingEvents);
+                EntityType,
+                _configurationService.Configuration.EntityGuid,
+                hostname,
+                PluginType,
+                loggingEvents); ;
 
             var responseStatus = DataTransportService.Send(modelsCollection);
 

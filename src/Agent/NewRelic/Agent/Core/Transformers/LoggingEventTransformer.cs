@@ -15,6 +15,7 @@ using NewRelic.Agent.Core.Transactions;
 using NewRelic.Agent.Core.Utilities;
 using NewRelic.Agent.Core.WireModels;
 using NewRelic.Agent.Extensions.Providers.Wrapper;
+using NewRelic.Core;
 using NewRelic.Core.DistributedTracing;
 using NewRelic.Core.Logging;
 using System;
@@ -53,10 +54,8 @@ namespace NewRelic.Agent.Core.Transformers
                 return;
             }
 
-            linkingMetadata.Add("log.level", logLevel);
-
             // make a logging event, build event with metadata eventually
-            var wiremodel = new LoggingEventWireModel(timestamp, logMessage, linkingMetadata);
+            var wiremodel = new LoggingEventWireModel(timestamp.ToUnixTimeMilliseconds(), logMessage, logLevel, linkingMetadata);
 
             _loggingEventAggregator.Collect(wiremodel);
         }
