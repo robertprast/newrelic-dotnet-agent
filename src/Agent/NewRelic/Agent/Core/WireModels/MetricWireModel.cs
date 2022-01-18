@@ -969,10 +969,10 @@ namespace NewRelic.Agent.Core.WireModels
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
             }
 
-            public MetricWireModel TryBuildSupportabilitLoggingEventsCollectedMetric(int loggingEventsCollected)
+            public MetricWireModel TryBuildSupportabilitLoggingEventsCollectedMetric()
             {
                 const string proposedName = MetricNames.SupportabilityLoggingEventsCollected;
-                var data = MetricDataWireModel.BuildCountData(loggingEventsCollected);
+                var data = MetricDataWireModel.BuildCountData();
                 return BuildMetric(_metricNameService, proposedName, null, data);
             }
 

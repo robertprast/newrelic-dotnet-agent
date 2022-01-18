@@ -141,7 +141,7 @@ namespace NewRelic.Agent.Core.AgentHealth
         void ReportInfiniteTracingSpanQueueSize(int queueSize);
         void IncrementLogLinesCount(string logLevel);
         void UpdateLogSize(string logLevel, int logLineSize);
-        void ReportLoggingEventsCollected(int count);
+        void ReportLoggingEventCollected();
         void ReportLoggingEventsRecollected(int count);
         void ReportLoggingEventsSent(int count);
     }

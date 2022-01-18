@@ -199,7 +199,7 @@ namespace NewRelic.Agent.Core.WireModels
 
         MetricWireModel TryBuildLoggingMetricsSizeMetric(string logLevel, int size);
 
-        MetricWireModel TryBuildSupportabilitLoggingEventsCollectedMetric(int loggingEventsCollected);
+        MetricWireModel TryBuildSupportabilitLoggingEventsCollectedMetric();
 
         MetricWireModel TryBuildSupportabilitLoggingEventsRecollectedMetric(int loggingEventsRecollected);
 

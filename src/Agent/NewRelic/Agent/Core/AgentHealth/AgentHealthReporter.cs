@@ -651,7 +651,7 @@ namespace NewRelic.Agent.Core.AgentHealth
             _logLinesSzieByLevel[normalizedLevel].Add(logLineSize);
         }
 
-        public void ReportLoggingEventsCollected(int count) => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsCollectedMetric(count));
+        public void ReportLoggingEventCollected() => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsCollectedMetric());
 
         public void ReportLoggingEventsRecollected(int count) => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsRecollectedMetric(count));
 

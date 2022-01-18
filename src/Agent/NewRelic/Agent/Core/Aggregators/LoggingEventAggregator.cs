@@ -55,7 +55,7 @@ namespace NewRelic.Agent.Core.Aggregators
 
         public override void Collect(LoggingEventWireModel loggingEventWireModel)
         {
-            _agentHealthReporter.ReportErrorTraceCollected();
+            _agentHealthReporter.ReportLoggingEventCollected();
             AddToCollection(loggingEventWireModel);
         }
 
@@ -68,15 +68,12 @@ namespace NewRelic.Agent.Core.Aggregators
                 return;
             }
 
-            // need to build the Collection model and fill with logging events and common data.
-            // collection is expected to be in a list based on the format (see models)
-            var loggingEvents = loggingEventWireModels.ToArray();
-
-            // matches metadata
+            // matches metadata so that utilization and this match
             var hostname = !string.IsNullOrEmpty(_configurationService.Configuration.UtilizationFullHostName)
                 ? _configurationService.Configuration.UtilizationFullHostName
                 : _configurationService.Configuration.UtilizationHostName;
 
+            var loggingEvents = loggingEventWireModels.ToArray();
             var modelsCollection = new LoggingEventWireModelCollection(
                 _configurationService.Configuration.ApplicationNames.ElementAt(0),
                 EntityType,
@@ -100,6 +97,8 @@ namespace NewRelic.Agent.Core.Aggregators
 
         private ConcurrentBag<LoggingEventWireModel> GetAndResetCollection()
         {
+            // this assumes that we want to collect the full amount each 5 second harvest cycle.
+            // If instead we want to call that for a 60 second internal with 5 second harvest, we will need to divide the value.
             _loggingEventCollectionMaximum = _configuration.LoggingEventsMaximumPerPeriod;
             return Interlocked.Exchange(ref _loggingEventWireModels, new ConcurrentBag<LoggingEventWireModel>());
         }
