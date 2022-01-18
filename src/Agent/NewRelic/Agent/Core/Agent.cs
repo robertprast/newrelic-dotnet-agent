@@ -404,11 +404,11 @@ namespace NewRelic.Agent.Core
             _agentHealthReporter.ReportSupportabilityCountMetric(metricName, count);
         }
 
-        public void RecordLogMessage(DateTime timestamp, string logLevel, string logMessage, IDictionary<string, string> linkingMetadata)
+        public void RecordLogMessage(DateTime timestamp, string logLevel, string logMessage, string spanId, string traceId)
         {
             if (_configurationService.Configuration.LoggingEventCollectorEnabled)
             {
-                _loggingMetricsEventTransformer.Transform(timestamp, logLevel, logMessage, linkingMetadata);
+                _loggingMetricsEventTransformer.Transform(timestamp, logLevel, logMessage, spanId, traceId);
             }
         }
 

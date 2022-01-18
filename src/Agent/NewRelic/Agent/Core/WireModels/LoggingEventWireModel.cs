@@ -25,15 +25,22 @@ namespace NewRelic.Agent.Core.WireModels
         public string Level { get; }
 
         /// <summary>
-        /// Metadata from GetLinkingMetadata and instrumentation.
+        /// The span id of the segment.
         /// </summary>
-        public IDictionary<string, string> Attributes { get; }
+        public string SpanId { get; }
 
-        public LoggingEventWireModel(long unixTimestampMS, string message, string level, IDictionary<string, string> attributes)
+        /// <summary>
+        /// The traced if of the transaction.
+        /// </summary>
+        public string TraceId { get; }
+
+        public LoggingEventWireModel(long unixTimestampMS, string message, string level, string spanId, string traceId)
         {
             TimeStamp = unixTimestampMS;
             Message = message;
-            Attributes = attributes;
+            Level = level;
+            SpanId = spanId;
+            TraceId = traceId;
         }
     }
 }

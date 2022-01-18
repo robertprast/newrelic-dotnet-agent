@@ -4,13 +4,26 @@
 
 using System;
 using NewRelic.Agent.Core.WireModels;
-using NewRelic.Core;
 using Newtonsoft.Json;
 
 namespace NewRelic.Agent.Core.JsonConverters
 {
     public class LoggingEventWireModelCollectionJsonConverter : JsonConverter<LoggingEventWireModelCollection>
     {
+        private const string Common = "common";
+        private const string Attributes = "attributes";
+        private const string EntityName = "entity.name";
+        private const string EntityType = "entity.type";
+        private const string EntityGuid = "entity.guid";
+        private const string Hostname = "hostname";
+        private const string PluginType = "plugin.type";
+        private const string Logs = "logs";
+        private const string TimeStamp = "timestamp";
+        private const string Message = "message";
+        private const string Level = "level";
+        private const string SpanId = "spanid";
+        private const string TraceId = "traceid";
+
         public override LoggingEventWireModelCollection ReadJson(JsonReader reader, Type objectType, LoggingEventWireModelCollection existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
@@ -25,45 +38,49 @@ namespace NewRelic.Agent.Core.JsonConverters
         {
             jsonWriter.WriteStartObject();
 
-            jsonWriter.WritePropertyName("common");
+            jsonWriter.WritePropertyName(Common);
             jsonWriter.WriteStartObject();
-            jsonWriter.WritePropertyName("attributes");
+            jsonWriter.WritePropertyName(Attributes);
             jsonWriter.WriteStartObject();
-            jsonWriter.WritePropertyName("entity.name");
-            jsonWriter.WriteValue(value.CommonProperties.Attributes.EntityName);
-            jsonWriter.WritePropertyName("entity.type");
-            jsonWriter.WriteValue(value.CommonProperties.Attributes.EntityType);
-            jsonWriter.WritePropertyName("entity.guid");
-            jsonWriter.WriteValue(value.CommonProperties.Attributes.EntityGuid);
-            jsonWriter.WritePropertyName("hostname");
-            jsonWriter.WriteValue(value.CommonProperties.Attributes.Hostname);
-            jsonWriter.WritePropertyName("plugin.type");
-            jsonWriter.WriteValue(value.CommonProperties.Attributes.PluginType);
+            jsonWriter.WritePropertyName(EntityName);
+            jsonWriter.WriteValue(value.EntityName);
+            jsonWriter.WritePropertyName(EntityType);
+            jsonWriter.WriteValue(value.EntityType);
+            jsonWriter.WritePropertyName(EntityGuid);
+            jsonWriter.WriteValue(value.EntityGuid);
+            jsonWriter.WritePropertyName(Hostname);
+            jsonWriter.WriteValue(value.Hostname);
+            jsonWriter.WritePropertyName(PluginType);
+            jsonWriter.WriteValue(value.PluginType);
             jsonWriter.WriteEndObject();
             jsonWriter.WriteEndObject();
 
-            jsonWriter.WritePropertyName("logs");
+            jsonWriter.WritePropertyName(Logs);
             jsonWriter.WriteStartArray();
             for (int i = 0; i < value.LoggingEvents.Count; i++)
             {
                 var logEvent = value.LoggingEvents[i];
                 jsonWriter.WriteStartObject();
-                jsonWriter.WritePropertyName("timestamp");
+                jsonWriter.WritePropertyName(TimeStamp);
                 jsonWriter.WriteValue(logEvent.TimeStamp);
-                jsonWriter.WritePropertyName("message");
+                jsonWriter.WritePropertyName(Message);
                 jsonWriter.WriteValue(logEvent.Message);
-                jsonWriter.WritePropertyName("level");
+                jsonWriter.WritePropertyName(Level);
                 jsonWriter.WriteValue(logEvent.Level);
-                jsonWriter.WritePropertyName("attributes");
+
+                jsonWriter.WritePropertyName(Attributes);
                 jsonWriter.WriteStartObject();
-                if (logEvent.Attributes.Count > 0)
+
+                if (!string.IsNullOrWhiteSpace(logEvent.SpanId))
                 {
-                    // using foreach here since it is fast enough and simpler than other methods
-                    foreach (var pair in logEvent.Attributes)
-                    {
-                        jsonWriter.WritePropertyName(pair.Key);
-                        jsonWriter.WriteValue(pair.Value);
-                    }
+                    jsonWriter.WritePropertyName(SpanId);
+                    jsonWriter.WriteValue(logEvent.SpanId);
+                }
+
+                if (!string.IsNullOrWhiteSpace(logEvent.TraceId))
+                {
+                    jsonWriter.WritePropertyName(TraceId);
+                    jsonWriter.WriteValue(logEvent.TraceId);
                 }
 
                 jsonWriter.WriteEndObject();

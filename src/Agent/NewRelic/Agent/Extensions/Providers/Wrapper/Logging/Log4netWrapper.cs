@@ -45,8 +45,7 @@ namespace NewRelic.Providers.Wrapper.Logging
 
             if (transaction != null && !string.IsNullOrWhiteSpace(renderedMessage))
             {
-                var linkingMetadata = agent.GetLinkingMetadata();
-                xapi.RecordLogMessage(timestamp, logLevel, renderedMessage, linkingMetadata);
+                xapi.RecordLogMessage(timestamp, logLevel, renderedMessage, agent.TraceMetadata.SpanId, agent.TraceMetadata.TraceId);
             }
 
             return Delegates.NoOp;

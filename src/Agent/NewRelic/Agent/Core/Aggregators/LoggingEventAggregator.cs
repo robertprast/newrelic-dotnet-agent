@@ -32,7 +32,6 @@ namespace NewRelic.Agent.Core.Aggregators
         private readonly IAgentHealthReporter _agentHealthReporter;
         private readonly IConfigurationService _configurationService;
 
-        private readonly ReaderWriterLockSlim _readerWriterLock = new ReaderWriterLockSlim();
         private uint _loggingEventCollectionMaximum;
         private ConcurrentBag<LoggingEventWireModel> _loggingEventWireModels = new ConcurrentBag<LoggingEventWireModel>();
 
@@ -50,7 +49,6 @@ namespace NewRelic.Agent.Core.Aggregators
         public override void Dispose()
         {
             base.Dispose();
-            _readerWriterLock.Dispose();
         }
 
         protected override bool IsEnabled => _configuration.LoggingEventCollectorEnabled;
@@ -58,34 +56,17 @@ namespace NewRelic.Agent.Core.Aggregators
         public override void Collect(LoggingEventWireModel loggingEventWireModel)
         {
             _agentHealthReporter.ReportErrorTraceCollected();
-
-            _readerWriterLock.EnterReadLock();
-            try
-            {
-                AddToCollection(loggingEventWireModel);
-            }
-            finally
-            {
-                _readerWriterLock.ExitReadLock();
-            }
+            AddToCollection(loggingEventWireModel);
         }
 
         protected override void Harvest()
         {
             ConcurrentBag<LoggingEventWireModel> loggingEventWireModels;
-
-            _readerWriterLock.EnterWriteLock();
-            try
-            {
-                loggingEventWireModels = GetAndResetCollection();
-            }
-            finally
-            {
-                _readerWriterLock.ExitWriteLock();
-            }
-
+            loggingEventWireModels = GetAndResetCollection();
             if (loggingEventWireModels.Count <= 0)
+            {
                 return;
+            }
 
             // need to build the Collection model and fill with logging events and common data.
             // collection is expected to be in a list based on the format (see models)
@@ -97,7 +78,7 @@ namespace NewRelic.Agent.Core.Aggregators
                 : _configurationService.Configuration.UtilizationHostName;
 
             var modelsCollection = new LoggingEventWireModelCollection(
-                _configurationService.Configuration.ApplicationNames.First(),
+                _configurationService.Configuration.ApplicationNames.ElementAt(0),
                 EntityType,
                 _configurationService.Configuration.EntityGuid,
                 hostname,
@@ -126,14 +107,15 @@ namespace NewRelic.Agent.Core.Aggregators
         private void AddToCollection(LoggingEventWireModel loggingEventWireModel)
         {
             if (_loggingEventWireModels.Count >= _loggingEventCollectionMaximum)
+            {
                 return;
+            }
 
             _loggingEventWireModels.Add(loggingEventWireModel);
         }
 
         private void Retain(IEnumerable<LoggingEventWireModel> loggingEventWireModels)
         {
-            loggingEventWireModels = loggingEventWireModels.ToList();
             _agentHealthReporter.ReportLoggingEventsRecollected(loggingEventWireModels.Count());
 
             // It is possible, but unlikely, to lose incoming log events here due to a race condition

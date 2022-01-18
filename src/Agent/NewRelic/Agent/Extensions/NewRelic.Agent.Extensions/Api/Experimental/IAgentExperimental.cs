@@ -19,7 +19,7 @@ namespace NewRelic.Agent.Api.Experimental
         /// <param name="count">Defaults to 1.0f</param>
         void RecordSupportabilityMetric(string metricName, int count = 1);
         
-        void RecordLogMessage(DateTime timestamp, string logLevel, string logessage, IDictionary<string, string> linkingMetadata);
+        void RecordLogMessage(DateTime timestamp, string logLevel, string logessage, string spanId, string traceId);
 
         void IncrementLogLinesCount(string logLevel);
 
