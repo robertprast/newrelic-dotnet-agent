@@ -957,15 +957,27 @@ namespace NewRelic.Agent.Core.WireModels
 
             #region Logging Events and Metrics
 
-            public MetricWireModel TryBuildLoggingMetricsLinesCountMetric(string logLevel, int count)
+            public MetricWireModel TryBuildLoggingMetricsLinesCountBySeverityMetric(string logLevel, int count)
             {
-                var proposedName = MetricNames.GetLoggingMetricsLinesName(logLevel);
+                var proposedName = MetricNames.GetLoggingMetricsLinesBySeverityName(logLevel);
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(count));
             }
 
-            public MetricWireModel TryBuildLoggingMetricsSizeMetric(string logLevel, int size)
+            public MetricWireModel TryBuildLoggingMetricsSizeBySeverityMetric(string logLevel, int size)
             {
-                var proposedName = MetricNames.GetLoggingMetricsLinesName(logLevel);
+                var proposedName = MetricNames.GetLoggingMetricsLinesBySeverityName(logLevel);
+                return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
+            }
+
+            public MetricWireModel TryBuildLoggingMetricsLinesCountMetric(int count)
+            {
+                var proposedName = MetricNames.GetLoggingMetricsLinesName();
+                return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(count));
+            }
+
+            public MetricWireModel TryBuildLoggingMetricsSizeMetric(int size)
+            {
+                var proposedName = MetricNames.GetLoggingMetricsLinesName();
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
             }
 

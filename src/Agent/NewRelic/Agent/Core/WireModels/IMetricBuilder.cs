@@ -195,9 +195,13 @@ namespace NewRelic.Agent.Core.WireModels
 
         MetricWireModel TryBuildSupportabilityGaugeMetric(string metricName, float value);
 
-        MetricWireModel TryBuildLoggingMetricsLinesCountMetric(string logLevel, int count);
+        MetricWireModel TryBuildLoggingMetricsLinesCountBySeverityMetric(string logLevel, int count);
 
-        MetricWireModel TryBuildLoggingMetricsSizeMetric(string logLevel, int size);
+        MetricWireModel TryBuildLoggingMetricsSizeBySeverityMetric(string logLevel, int size);
+
+        MetricWireModel TryBuildLoggingMetricsLinesCountMetric(int count);
+
+        MetricWireModel TryBuildLoggingMetricsSizeMetric(int size);
 
         MetricWireModel TryBuildSupportabilitLoggingEventsCollectedMetric();
 

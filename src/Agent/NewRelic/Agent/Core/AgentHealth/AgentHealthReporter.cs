@@ -620,20 +620,34 @@ namespace NewRelic.Agent.Core.AgentHealth
 
         public void CollectLoggingMetrics()
         {
+            var totalCount = 0;
             foreach (var logLinesCounter in _logLinesCountByLevel)
             {
                 if (TryGetCount(logLinesCounter.Value, out var linesCount))
                 {
-                    TrySend(_metricBuilder.TryBuildLoggingMetricsLinesCountMetric(logLinesCounter.Key, linesCount));
+                    totalCount += linesCount;
+                    TrySend(_metricBuilder.TryBuildLoggingMetricsLinesCountBySeverityMetric(logLinesCounter.Key, linesCount));
                 }
             }
 
+            if (totalCount > 0)
+            {
+                TrySend(_metricBuilder.TryBuildLoggingMetricsLinesCountMetric(totalCount));
+            }
+            
+            var totalSize = 0;
             foreach (var logsSizeCounter in _logLinesSzieByLevel)
             {
-                if (TryGetCount(logsSizeCounter.Value, out var linesSzie))
+                if (TryGetCount(logsSizeCounter.Value, out var linesSize))
                 {
-                    TrySend(_metricBuilder.TryBuildLoggingMetricsSizeMetric(logsSizeCounter.Key, linesSzie));
+                    totalSize += linesSize;
+                    TrySend(_metricBuilder.TryBuildLoggingMetricsSizeBySeverityMetric(logsSizeCounter.Key, linesSize));
                 }
+            }
+
+            if (totalSize > 0)
+            {
+                TrySend(_metricBuilder.TryBuildLoggingMetricsSizeMetric(totalSize));
             }
         }
 
