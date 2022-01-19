@@ -1038,7 +1038,7 @@ namespace NewRelic.Agent.Core.Metric
             return LoggingMetricsDotnetLines;
         }
 
-        public static string GetLoggingMetricsSizeyName()
+        public static string GetLoggingMetricsSizeName()
         {
             return LoggingMetricsDotnetSize;
         }

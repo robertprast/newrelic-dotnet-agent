@@ -22,7 +22,7 @@ namespace NewRelic.Agent.Core.AgentHealth
     public class AgentHealthReporter : DisposableService, IAgentHealthReporter
     {
         private readonly ConcurrentDictionary<string, InterlockedCounter> _logLinesCountByLevel = new ConcurrentDictionary<string, InterlockedCounter>();
-        private readonly ConcurrentDictionary<string, InterlockedCounter> _logLinesSzieByLevel = new ConcurrentDictionary<string, InterlockedCounter>();
+        private readonly ConcurrentDictionary<string, InterlockedCounter> _logLinesSizeByLevel = new ConcurrentDictionary<string, InterlockedCounter>();
 
         private static readonly TimeSpan _timeBetweenExecutions = TimeSpan.FromMinutes(1);
 
@@ -636,7 +636,7 @@ namespace NewRelic.Agent.Core.AgentHealth
             }
             
             var totalSize = 0;
-            foreach (var logsSizeCounter in _logLinesSzieByLevel)
+            foreach (var logsSizeCounter in _logLinesSizeByLevel)
             {
                 if (TryGetCount(logsSizeCounter.Value, out var linesSize))
                 {
@@ -661,8 +661,8 @@ namespace NewRelic.Agent.Core.AgentHealth
         public void UpdateLogSize(string logLevel, int logLineSize)
         {
             var normalizedLevel = logLevel.ToUpper();
-            _logLinesSzieByLevel.TryAdd(normalizedLevel, new InterlockedCounter());
-            _logLinesSzieByLevel[normalizedLevel].Add(logLineSize);
+            _logLinesSizeByLevel.TryAdd(normalizedLevel, new InterlockedCounter());
+            _logLinesSizeByLevel[normalizedLevel].Add(logLineSize);
         }
 
         public void ReportLoggingEventCollected() => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsCollectedMetric());

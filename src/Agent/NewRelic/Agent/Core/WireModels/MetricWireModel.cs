@@ -965,7 +965,7 @@ namespace NewRelic.Agent.Core.WireModels
 
             public MetricWireModel TryBuildLoggingMetricsSizeBySeverityMetric(string logLevel, int size)
             {
-                var proposedName = MetricNames.GetLoggingMetricsLinesBySeverityName(logLevel);
+                var proposedName = MetricNames.GetLoggingMetricsSizeBySeverityName(logLevel);
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
             }
 
@@ -977,7 +977,7 @@ namespace NewRelic.Agent.Core.WireModels
 
             public MetricWireModel TryBuildLoggingMetricsSizeMetric(int size)
             {
-                var proposedName = MetricNames.GetLoggingMetricsLinesName();
+                var proposedName = MetricNames.GetLoggingMetricsSizeName();
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
             }
 
