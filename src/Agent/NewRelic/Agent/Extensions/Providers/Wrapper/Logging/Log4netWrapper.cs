@@ -43,7 +43,7 @@ namespace NewRelic.Providers.Wrapper.Logging
             xapi.IncrementLogLinesCount(logLevel);
             xapi.UpdateLogSize(logLevel, logLineSize);
 
-            if (transaction != null && !string.IsNullOrWhiteSpace(renderedMessage))
+            if (agent.CurrentTransaction.IsValid && !string.IsNullOrWhiteSpace(renderedMessage))
             {
                 xapi.RecordLogMessage(timestamp, logLevel, renderedMessage, agent.TraceMetadata.SpanId, agent.TraceMetadata.TraceId);
             }
