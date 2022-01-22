@@ -13,7 +13,6 @@
     <AssemblyName>InstallerActions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <WixCATargetsPath Condition=" '$(WixCATargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.CA.targets</WixCATargetsPath>
     <IntermediateOutputPath>$(SolutionDir)..\..\_build\$(Platform)-$(Configuration)\$(AssemblyName)</IntermediateOutputPath>
     <OutputPath>$(SolutionDir)..\..\_build\$(Platform)-$(Configuration)\$(AssemblyName)</OutputPath>
     <TargetFrameworkProfile />
@@ -65,5 +64,9 @@
     <Content Include="CustomAction.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(WixCATargetsPath)" />
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+    <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
+  </Target>
 </Project>
