@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProductVersion>8.0.30703</ProductVersion>
     <ProjectGuid>{ACDD62F6-4E3D-4EC0-89A7-3A9DAE09C651}</ProjectGuid>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <AssemblyTitle>MsiInstallerTests</AssemblyTitle>
     <Product>FunctionalTests</Product>

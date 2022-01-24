@@ -27,16 +27,6 @@
     <Compile Include="WizardUI.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InstallerActions\InstallerActions.csproj">
-      <Name>InstallerActions</Name>
-      <Project>{e8c424d3-4493-4fe6-89b1-650a589c4209}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WixExtension Include="WixNetFxExtension">
       <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
       <Name>WixNetFxExtension</Name>
@@ -54,6 +44,16 @@
       <Name>WixUtilExtension</Name>
     </WixExtension>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InstallerActions\InstallerActions.csproj">
+      <Name>InstallerActions</Name>
+      <Project>{5eaa3730-9be6-4d40-ba1e-a5a1ff4b0722}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
   <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
@@ -64,7 +64,6 @@
     <WindowsSdkPath>$(WindowsSdkPathBin)\10.0.18362.0</WindowsSdkPath>
     <SignToolPath>$(WindowsSdkPath)\x64\signtool.exe</SignToolPath>
   </PropertyGroup>
-
   <Target Name="SignInstaller">
     <Exec Command="&quot;$(SignToolPath)&quot; sign /d &quot;New Relic .NET Agent&quot; /a &quot;$(OutputPath)$(OutputName).msi&quot;" StandardOutputImportance="high" />
     <ReadFileVersionFromDll FilePath="$(SolutionDir)..\..\_build\AnyCPU-$(Configuration)\NewRelic.Agent.Core\net45\NewRelic.Agent.Core.dll">
@@ -73,9 +72,7 @@
     <Copy SourceFiles="$(OutputPath)\$(OutputName).msi" DestinationFiles="$(OutputPath)\NewRelicAgent_$(Platform)_$(FileVersionString).msi" />
     <Delete Files="$(OutputPath)\$(OutputName).msi" />
   </Target>
-  
   <Target Name="AfterBuild" DependsOnTargets="SignInstaller" />
-
   <UsingTask TaskName="ReadFileVersionFromDll" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <FilePath ParameterType="System.String" Required="true" />
@@ -83,12 +80,10 @@
     </ParameterGroup>
     <Task>
       <Using Namespace="System.Diagnostics" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
+      <Code Type="Fragment" Language="cs"><![CDATA[
                 FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(FilePath);
                 FileVersionString = myFileVersionInfo.FileVersion;
-                ]]>
-      </Code>
+                ]]></Code>
     </Task>
   </UsingTask>
 </Project>
