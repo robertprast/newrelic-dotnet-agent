@@ -182,8 +182,10 @@ namespace NewRelic.Agent.Configuration
         int DatabaseStatementCacheCapcity { get; }
         bool ForceSynchronousTimingCalculationHttpClient { get; }
         bool ExcludeNewrelicHeader { get; }
-        bool LoggingEventCollectorEnabled { get; }
-        bool LoggingMetricsCollectorEnabled { get; }
-        uint LoggingEventsMaximumPerPeriod { get; }
+        bool LogEventCollectorEnabled { get; }
+        bool LogMetricsCollectorEnabled { get; }
+        uint LogEventsMaximumPerPeriod { get; }
+        bool LogDecoratorEnabled { get; }
+        TimeSpan LogEventsHarvestCycle { get; }
     }
 }

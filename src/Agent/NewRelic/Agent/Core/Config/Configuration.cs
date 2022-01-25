@@ -4905,56 +4905,55 @@ namespace NewRelic.Agent.Core.Config
     public partial class configurationLogSending
     {
         
-        private configurationLogSendingLoggingMetrics loggingMetricsField;
+        private configurationLogSendingMetrics metricsField;
         
-        private configurationLogSendingLoggingForwarding loggingForwardingField;
+        private configurationLogSendingForwarding forwardingField;
         
-        private uint maxSamplesStoredField;
+        private configurationLogSendingDecorating decoratingField;
         
         /// <summary>
         /// configurationLogSending class constructor
         /// </summary>
         public configurationLogSending()
         {
-            this.loggingForwardingField = new configurationLogSendingLoggingForwarding();
-            this.loggingMetricsField = new configurationLogSendingLoggingMetrics();
-            this.maxSamplesStoredField = ((uint)(10000));
+            this.decoratingField = new configurationLogSendingDecorating();
+            this.forwardingField = new configurationLogSendingForwarding();
+            this.metricsField = new configurationLogSendingMetrics();
         }
         
-        public configurationLogSendingLoggingMetrics loggingMetrics
+        public configurationLogSendingMetrics metrics
         {
             get
             {
-                return this.loggingMetricsField;
+                return this.metricsField;
             }
             set
             {
-                this.loggingMetricsField = value;
+                this.metricsField = value;
             }
         }
         
-        public configurationLogSendingLoggingForwarding loggingForwarding
+        public configurationLogSendingForwarding forwarding
         {
             get
             {
-                return this.loggingForwardingField;
+                return this.forwardingField;
             }
             set
             {
-                this.loggingForwardingField = value;
+                this.forwardingField = value;
             }
         }
         
-        [System.ComponentModel.DefaultValueAttribute(typeof(uint), "10000")]
-        public uint maxSamplesStored
+        public configurationLogSendingDecorating decorating
         {
             get
             {
-                return this.maxSamplesStoredField;
+                return this.decoratingField;
             }
             set
             {
-                this.maxSamplesStoredField = value;
+                this.decoratingField = value;
             }
         }
         
@@ -4973,15 +4972,15 @@ namespace NewRelic.Agent.Core.Config
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="urn:newrelic-config")]
-    public partial class configurationLogSendingLoggingMetrics
+    public partial class configurationLogSendingMetrics
     {
         
         private bool enabledField;
         
         /// <summary>
-        /// configurationLogSendingLoggingMetrics class constructor
+        /// configurationLogSendingMetrics class constructor
         /// </summary>
-        public configurationLogSendingLoggingMetrics()
+        public configurationLogSendingMetrics()
         {
             this.enabledField = true;
         }
@@ -5002,11 +5001,11 @@ namespace NewRelic.Agent.Core.Config
         
         #region Clone method
         /// <summary>
-        /// Create a clone of this configurationLogSendingLoggingMetrics object
+        /// Create a clone of this configurationLogSendingMetrics object
         /// </summary>
-        public virtual configurationLogSendingLoggingMetrics Clone()
+        public virtual configurationLogSendingMetrics Clone()
         {
-            return ((configurationLogSendingLoggingMetrics)(this.MemberwiseClone()));
+            return ((configurationLogSendingMetrics)(this.MemberwiseClone()));
         }
         #endregion
     }
@@ -5015,15 +5014,74 @@ namespace NewRelic.Agent.Core.Config
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="urn:newrelic-config")]
-    public partial class configurationLogSendingLoggingForwarding
+    public partial class configurationLogSendingForwarding
+    {
+        
+        private bool enabledField;
+        
+        private uint maxSamplesStoredField;
+        
+        /// <summary>
+        /// configurationLogSendingForwarding class constructor
+        /// </summary>
+        public configurationLogSendingForwarding()
+        {
+            this.enabledField = true;
+            this.maxSamplesStoredField = ((uint)(50000));
+        }
+        
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(true)]
+        public bool enabled
+        {
+            get
+            {
+                return this.enabledField;
+            }
+            set
+            {
+                this.enabledField = value;
+            }
+        }
+        
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(uint), "50000")]
+        public uint maxSamplesStored
+        {
+            get
+            {
+                return this.maxSamplesStoredField;
+            }
+            set
+            {
+                this.maxSamplesStoredField = value;
+            }
+        }
+        
+        #region Clone method
+        /// <summary>
+        /// Create a clone of this configurationLogSendingForwarding object
+        /// </summary>
+        public virtual configurationLogSendingForwarding Clone()
+        {
+            return ((configurationLogSendingForwarding)(this.MemberwiseClone()));
+        }
+        #endregion
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
+    [System.SerializableAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="urn:newrelic-config")]
+    public partial class configurationLogSendingDecorating
     {
         
         private bool enabledField;
         
         /// <summary>
-        /// configurationLogSendingLoggingForwarding class constructor
+        /// configurationLogSendingDecorating class constructor
         /// </summary>
-        public configurationLogSendingLoggingForwarding()
+        public configurationLogSendingDecorating()
         {
             this.enabledField = true;
         }
@@ -5044,11 +5102,11 @@ namespace NewRelic.Agent.Core.Config
         
         #region Clone method
         /// <summary>
-        /// Create a clone of this configurationLogSendingLoggingForwarding object
+        /// Create a clone of this configurationLogSendingDecorating object
         /// </summary>
-        public virtual configurationLogSendingLoggingForwarding Clone()
+        public virtual configurationLogSendingDecorating Clone()
         {
-            return ((configurationLogSendingLoggingForwarding)(this.MemberwiseClone()));
+            return ((configurationLogSendingDecorating)(this.MemberwiseClone()));
         }
         #endregion
     }

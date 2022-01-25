@@ -1780,32 +1780,49 @@ namespace NewRelic.Agent.Core.Configuration
 
         #region Logging Events and Metrics
 
-        public virtual bool LoggingEventCollectorEnabled
+        public virtual bool LogEventCollectorEnabled
         {
             get
             {
                 //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.logSending.loggingForwarding.enabled);
                 //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
-                return _localConfiguration.logSending.loggingForwarding.enabled;
+                return _localConfiguration.logSending.forwarding.enabled;
             }
         }
 
-        public virtual bool LoggingMetricsCollectorEnabled
+        public TimeSpan LogEventsHarvestCycle
+        {
+            get
+            {
+                return ServerOverrides(_serverConfiguration.EventHarvestConfig?.LogEventHarvestCycle(), TimeSpan.FromSeconds(5));
+            }
+        }
+
+        public virtual uint LogEventsMaximumPerPeriod
+        {
+            get
+            {
+                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.logSending.maxSamplesStored);
+                //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
+                return _localConfiguration.logSending.forwarding.maxSamplesStored;
+            }
+        }
+
+        public virtual bool LogMetricsCollectorEnabled
+        {
+            get
+            {
+                return _localConfiguration.logSending.metrics.enabled;
+            }
+        }
+
+        public virtual bool LogDecoratorEnabled
         {
             get
             {
                 //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.logSending.loggingMetrics.enabled);
                 //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
-                return _localConfiguration.logSending.loggingMetrics.enabled;
-            }
-        }
-
-        public virtual uint LoggingEventsMaximumPerPeriod {
-            get
-            {
-                //var configuredValue = ServerOverrides(_serverConfiguration.RpmConfig.ErrorCollectorEnabled, _localConfiguration.logSending.maxSamplesStored);
-                //return ServerCanDisable(_serverConfiguration.ErrorCollectionEnabled, configuredValue);
-                return _localConfiguration.logSending.maxSamplesStored;
+                return _localConfiguration.logSending.decorating.enabled;
             }
         }
 

@@ -406,7 +406,7 @@ namespace NewRelic.Agent.Core
 
         public void RecordLogMessage(DateTime timestamp, string logLevel, string logMessage, string spanId, string traceId)
         {
-            if (_configurationService.Configuration.LoggingEventCollectorEnabled)
+            if (_configurationService.Configuration.LogEventCollectorEnabled)
             {
                 _loggingMetricsEventTransformer.Transform(timestamp, logLevel, logMessage, spanId, traceId);
             }
@@ -414,7 +414,7 @@ namespace NewRelic.Agent.Core
 
         public void IncrementLogLinesCount(string logLevel)
         {
-            if (_configurationService.Configuration.LoggingMetricsCollectorEnabled)
+            if (_configurationService.Configuration.LogMetricsCollectorEnabled)
             {
                 _agentHealthReporter.IncrementLogLinesCount(logLevel);
             }
@@ -422,7 +422,7 @@ namespace NewRelic.Agent.Core
 
         public void UpdateLogSize(string logLevel, int logLineSize)
         {
-            if (_configurationService.Configuration.LoggingMetricsCollectorEnabled)
+            if (_configurationService.Configuration.LogMetricsCollectorEnabled)
             {
                 _agentHealthReporter.UpdateLogSize(logLevel, logLineSize);
             }

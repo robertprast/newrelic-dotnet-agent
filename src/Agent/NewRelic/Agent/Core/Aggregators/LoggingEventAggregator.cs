@@ -44,14 +44,14 @@ namespace NewRelic.Agent.Core.Aggregators
             GetAndResetCollection();
         }
 
-        protected override TimeSpan HarvestCycle => TimeSpan.FromSeconds(5);
+        protected override TimeSpan HarvestCycle => _configuration.LogEventsHarvestCycle;
 
         public override void Dispose()
         {
             base.Dispose();
         }
 
-        protected override bool IsEnabled => _configuration.LoggingEventCollectorEnabled;
+        protected override bool IsEnabled => _configuration.LogEventCollectorEnabled;
 
         public override void Collect(LoggingEventWireModel loggingEventWireModel)
         {
@@ -97,9 +97,8 @@ namespace NewRelic.Agent.Core.Aggregators
 
         private ConcurrentBag<LoggingEventWireModel> GetAndResetCollection()
         {
-            // this assumes that we want to collect the full amount each 5 second harvest cycle.
-            // If instead we want to call that for a 60 second internal with 5 second harvest, we will need to divide the value.
-            _loggingEventCollectionMaximum = _configuration.LoggingEventsMaximumPerPeriod;
+            // limits are per 60 seconds, so we need to prorate the value to the faster-event-harvest.
+            _loggingEventCollectionMaximum = Convert.ToUInt32(_configuration.LogEventsMaximumPerPeriod / (60 / HarvestCycle.TotalSeconds));
             return Interlocked.Exchange(ref _loggingEventWireModels, new ConcurrentBag<LoggingEventWireModel>());
         }
 
