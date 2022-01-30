@@ -53,7 +53,6 @@ namespace NewRelic.Providers.Wrapper.Logging
 
             xapi.RecordLogMessage(timestamp, logLevel, renderedMessage, agent.TraceMetadata.SpanId, agent.TraceMetadata.TraceId);
 
-
             if (!agent.Configuration.LogDecoratorEnabled)
             {
                 return Delegates.NoOp;
