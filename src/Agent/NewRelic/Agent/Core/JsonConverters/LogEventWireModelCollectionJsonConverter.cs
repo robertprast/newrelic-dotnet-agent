@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace NewRelic.Agent.Core.JsonConverters
 {
-    public class LoggingEventWireModelCollectionJsonConverter : JsonConverter<LoggingEventWireModelCollection>
+    public class LogEventWireModelCollectionJsonConverter : JsonConverter<LogEventWireModelCollection>
     {
         private const string Common = "common";
         private const string Attributes = "attributes";
@@ -24,17 +24,17 @@ namespace NewRelic.Agent.Core.JsonConverters
         private const string SpanId = "spanid";
         private const string TraceId = "traceid";
 
-        public override LoggingEventWireModelCollection ReadJson(JsonReader reader, Type objectType, LoggingEventWireModelCollection existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override LogEventWireModelCollection ReadJson(JsonReader reader, Type objectType, LogEventWireModelCollection existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
-        public override void WriteJson(JsonWriter jsonWriter, LoggingEventWireModelCollection value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter jsonWriter, LogEventWireModelCollection value, JsonSerializer serializer)
         {
             WriteJsonImpl(jsonWriter, value, serializer);
         }
 
-        public static void WriteJsonImpl(JsonWriter jsonWriter, LoggingEventWireModelCollection value, JsonSerializer serializer)
+        public static void WriteJsonImpl(JsonWriter jsonWriter, LogEventWireModelCollection value, JsonSerializer serializer)
         {
             jsonWriter.WriteStartObject();
 

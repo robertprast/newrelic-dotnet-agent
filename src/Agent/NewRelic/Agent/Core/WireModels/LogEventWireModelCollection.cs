@@ -7,8 +7,8 @@ using System.Collections.Generic;
 
 namespace NewRelic.Agent.Core.WireModels
 {
-    [JsonConverter(typeof(LoggingEventWireModelCollectionJsonConverter))]
-    public class LoggingEventWireModelCollection
+    [JsonConverter(typeof(LogEventWireModelCollectionJsonConverter))]
+    public class LogEventWireModelCollection
     {
         public string EntityName { get; }
 
@@ -22,7 +22,7 @@ namespace NewRelic.Agent.Core.WireModels
 
         public IList<LogEventWireModel> LoggingEvents { get; }
 
-        public LoggingEventWireModelCollection(string entityName, string entityType, string entityGuid, string hostname, string pluginType, IList<LogEventWireModel> loggingEvents)
+        public LogEventWireModelCollection(string entityName, string entityType, string entityGuid, string hostname, string pluginType, IList<LogEventWireModel> loggingEvents)
         {
             EntityName = entityName;
             EntityType = entityType;

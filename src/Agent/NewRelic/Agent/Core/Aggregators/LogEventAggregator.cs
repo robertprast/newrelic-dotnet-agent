@@ -117,7 +117,7 @@ namespace NewRelic.Agent.Core.Aggregators
                 ? _configuration.UtilizationFullHostName
                 : _configuration.UtilizationHostName;
 
-            var modelsCollection = new LoggingEventWireModelCollection(
+            var modelsCollection = new LogEventWireModelCollection(
                 _configuration.ApplicationNames.ElementAt(0),
                 EntityType,
                 _configuration.EntityGuid,
