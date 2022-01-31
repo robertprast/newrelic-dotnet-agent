@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using System.Collections.Generic;
+using NewRelic.Collections;
 
 namespace NewRelic.Agent.Core.WireModels
 {
-    public class LoggingEventWireModel
+    public class LogEventWireModel : IHasPriority
 
     {
         /// <summary>
@@ -34,7 +34,23 @@ namespace NewRelic.Agent.Core.WireModels
         /// </summary>
         public string TraceId { get; }
 
-        public LoggingEventWireModel(long unixTimestampMS, string message, string level, string spanId, string traceId)
+        private float _priority;
+        public float Priority
+        {
+            get { return _priority; }
+            set
+            {
+                const float priorityMin = 0.0f;
+                if (value < priorityMin || float.IsNaN(value) || float.IsNegativeInfinity(value) || float.IsPositiveInfinity(value))
+                {
+                    throw new ArgumentException($"LogEventWireModel requires a valid priority value greater than {priorityMin}, value used: {value}");
+                }
+
+                _priority = value;
+            }
+        }
+
+        public LogEventWireModel(long unixTimestampMS, string message, string level, string spanId, string traceId)
         {
             TimeStamp = unixTimestampMS;
             Message = message;

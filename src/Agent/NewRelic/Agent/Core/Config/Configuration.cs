@@ -5019,7 +5019,7 @@ namespace NewRelic.Agent.Core.Config
         
         private bool enabledField;
         
-        private uint maxSamplesStoredField;
+        private int maxSamplesStoredField;
         
         /// <summary>
         /// configurationLogSendingForwarding class constructor
@@ -5027,7 +5027,7 @@ namespace NewRelic.Agent.Core.Config
         public configurationLogSendingForwarding()
         {
             this.enabledField = true;
-            this.maxSamplesStoredField = ((uint)(50000));
+            this.maxSamplesStoredField = 50000;
         }
         
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -5045,8 +5045,8 @@ namespace NewRelic.Agent.Core.Config
         }
         
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(uint), "50000")]
-        public uint maxSamplesStored
+        [System.ComponentModel.DefaultValueAttribute(50000)]
+        public int maxSamplesStored
         {
             get
             {

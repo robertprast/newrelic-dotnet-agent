@@ -55,7 +55,6 @@ namespace NewRelic.Agent.Core
         internal readonly IMetricNameService _metricNameService;
         private readonly ICATSupportabilityMetricCounters _catMetricCounters;
         private readonly Api.ITraceMetadataFactory _traceMetadataFactory;
-        private readonly ILoggingMetricsEventTransformer _loggingMetricsEventTransformer;
         private Extensions.Logging.ILogger _logger;
 
         public Agent(ITransactionService transactionService, ITransactionTransformer transactionTransformer,
@@ -64,8 +63,7 @@ namespace NewRelic.Agent.Core
             ISyntheticsHeaderHandler syntheticsHeaderHandler, ITransactionFinalizer transactionFinalizer,
             IBrowserMonitoringPrereqChecker browserMonitoringPrereqChecker, IBrowserMonitoringScriptMaker browserMonitoringScriptMaker,
             IConfigurationService configurationService, IAgentHealthReporter agentHealthReporter, IAgentTimerService agentTimerService,
-            IMetricNameService metricNameService, Api.ITraceMetadataFactory traceMetadataFactory, ICATSupportabilityMetricCounters catMetricCounters,
-            ILoggingMetricsEventTransformer loggingMetricsEventTransformer)
+            IMetricNameService metricNameService, Api.ITraceMetadataFactory traceMetadataFactory, ICATSupportabilityMetricCounters catMetricCounters)
         {
             _transactionService = transactionService;
             _transactionTransformer = transactionTransformer;
@@ -84,7 +82,6 @@ namespace NewRelic.Agent.Core
             _metricNameService = metricNameService;
             _traceMetadataFactory = traceMetadataFactory;
             _catMetricCounters = catMetricCounters;
-            _loggingMetricsEventTransformer = loggingMetricsEventTransformer;
 
             Instance = this;
         }
@@ -402,14 +399,6 @@ namespace NewRelic.Agent.Core
         public void RecordSupportabilityMetric(string metricName, int count)
         {
             _agentHealthReporter.ReportSupportabilityCountMetric(metricName, count);
-        }
-
-        public void RecordLogMessage(DateTime timestamp, string logLevel, string logMessage, string spanId, string traceId)
-        {
-            if (_configurationService.Configuration.LogEventCollectorEnabled)
-            {
-                _loggingMetricsEventTransformer.Transform(timestamp, logLevel, logMessage, spanId, traceId);
-            }
         }
 
         public void IncrementLogLinesCount(string logLevel)

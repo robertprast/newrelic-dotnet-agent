@@ -51,7 +51,7 @@ namespace NewRelic.Providers.Wrapper.Logging
             var getTimestampFunc = _getTimestamp ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<DateTime>(loggingEvent.GetType(), "TimeStampUtc");
             var timestamp = getTimestampFunc(loggingEvent);
 
-            xapi.RecordLogMessage(timestamp, logLevel, renderedMessage, agent.TraceMetadata.SpanId, agent.TraceMetadata.TraceId);
+            ((ITransactionExperimental)agent.CurrentTransaction).RecordLogMessage(timestamp, logLevel, renderedMessage, agent.TraceMetadata.SpanId, agent.TraceMetadata.TraceId);
 
             if (!agent.Configuration.LogDecoratorEnabled)
             {

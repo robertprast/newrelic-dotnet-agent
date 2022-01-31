@@ -20,9 +20,9 @@ namespace NewRelic.Agent.Core.WireModels
 
         public string PluginType { get; }
 
-        public IList<LoggingEventWireModel> LoggingEvents { get; }
+        public IList<LogEventWireModel> LoggingEvents { get; }
 
-        public LoggingEventWireModelCollection(string entityName, string entityType, string entityGuid, string hostname, string pluginType, IList<LoggingEventWireModel> loggingEvents)
+        public LoggingEventWireModelCollection(string entityName, string entityType, string entityGuid, string hostname, string pluginType, IList<LogEventWireModel> loggingEvents)
         {
             EntityName = entityName;
             EntityType = entityType;

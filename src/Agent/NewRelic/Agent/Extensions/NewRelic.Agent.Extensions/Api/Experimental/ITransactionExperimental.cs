@@ -39,5 +39,7 @@ namespace NewRelic.Agent.Api.Experimental
         /// <param name="method">The method of the request, such as an HTTP verb (e.g. GET or POST).</param>
         /// <returns>An object that can be used to manage all of the data we support for external requests.</returns>
         IExternalSegmentData CreateExternalSegmentData(Uri destinationUri, string method);
+
+        void RecordLogMessage(DateTime timestamp, string logLevel, string logessage, string spanId, string traceId);
     }
 }

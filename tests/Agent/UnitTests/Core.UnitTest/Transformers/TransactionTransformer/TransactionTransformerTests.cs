@@ -84,6 +84,7 @@ namespace NewRelic.Agent.Core.Transformers.TransactionTransformer.UnitTest
         private IDistributedTracePayloadHandler _distributedTracePayloadHandler;
         private IAttributeDefinitionService _attribDefSvc;
         private IAttributeDefinitions _attribDefs => _attribDefSvc.AttributeDefs;
+        private ILogEventAggregator _logEventAggregator;
 
 
         [SetUp]
@@ -128,8 +129,9 @@ namespace NewRelic.Agent.Core.Transformers.TransactionTransformer.UnitTest
             _errorService = new ErrorService(_configurationService);
             _distributedTracePayloadHandler = Mock.Create<IDistributedTracePayloadHandler>();
             _attribDefSvc = new AttributeDefinitionService((f) => new AttributeDefinitions(f));
+            _logEventAggregator = Mock.Create<ILogEventAggregator>();
 
-            _transactionTransformer = new TransactionTransformer(_transactionMetricNameMaker, _segmentTreeMaker, _metricNameService, _metricAggregator, _configurationService, _transactionTraceAggregator, _transactionTraceMaker, _transactionEventAggregator, _transactionEventMaker, _transactionAttributeMaker, _errorTraceAggregator, _errorTraceMaker, _errorEventAggregator, _errorEventMaker, _sqlTraceAggregator, _sqlTraceMaker, _spanEventAggregator, _spanEventMaker, _agentTimerService, Mock.Create<IAdaptiveSampler>(), _errorService, _spanEventAggregatorInfiniteTracing);
+            _transactionTransformer = new TransactionTransformer(_transactionMetricNameMaker, _segmentTreeMaker, _metricNameService, _metricAggregator, _configurationService, _transactionTraceAggregator, _transactionTraceMaker, _transactionEventAggregator, _transactionEventMaker, _transactionAttributeMaker, _errorTraceAggregator, _errorTraceMaker, _errorEventAggregator, _errorEventMaker, _sqlTraceAggregator, _sqlTraceMaker, _spanEventAggregator, _spanEventMaker, _agentTimerService, Mock.Create<IAdaptiveSampler>(), _errorService, _spanEventAggregatorInfiniteTracing, _logEventAggregator);
         }
 
         public IMetricBuilder GetSimpleMetricBuilder()

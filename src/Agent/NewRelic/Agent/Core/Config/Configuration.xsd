@@ -1616,7 +1616,7 @@
                                       </xs:documentation>
                                   </xs:annotation>
                               </xs:attribute>
-                              <xs:attribute name="maxSamplesStored" type="xs:unsignedInt" default="50000">
+                              <xs:attribute name="maxSamplesStored" type="xs:int" default="50000">
                                   <xs:annotation>
                                       <xs:documentation>
                                           The maximum number of log emssages captured per minute. Default is 50000 messages.
@@ -1648,20 +1648,6 @@
               </xs:complexType>
           </xs:element>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
 
         <xs:element name="threadProfiling" minOccurs="0" maxOccurs="1">
           <xs:complexType>

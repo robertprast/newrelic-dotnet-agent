@@ -184,7 +184,7 @@ namespace NewRelic.Agent.Configuration
         bool ExcludeNewrelicHeader { get; }
         bool LogEventCollectorEnabled { get; }
         bool LogMetricsCollectorEnabled { get; }
-        uint LogEventsMaximumPerPeriod { get; }
+        int LogEventsMaximumPerPeriod { get; }
         bool LogDecoratorEnabled { get; }
         TimeSpan LogEventsHarvestCycle { get; }
     }

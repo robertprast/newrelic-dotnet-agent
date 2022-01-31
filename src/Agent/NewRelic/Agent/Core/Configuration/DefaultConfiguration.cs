@@ -1798,7 +1798,7 @@ namespace NewRelic.Agent.Core.Configuration
             }
         }
 
-        public virtual uint LogEventsMaximumPerPeriod
+        public virtual int LogEventsMaximumPerPeriod
         {
             get
             {
