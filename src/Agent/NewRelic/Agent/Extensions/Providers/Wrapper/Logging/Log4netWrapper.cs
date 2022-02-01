@@ -63,8 +63,13 @@ namespace NewRelic.Providers.Wrapper.Logging
 
             var getProperties = _getProperties ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<IDictionary>(loggingEvent.GetType(), "Properties");
             var props = getProperties(loggingEvent);
-            props["nr.spanid"] = agent.TraceMetadata.SpanId ?? string.Empty;
-            props["nr.traceid"] = agent.TraceMetadata.TraceId ?? string.Empty;
+
+            // the keys in the metadata match the ones used for decorating
+            var metadata = agent.GetLinkingMetadata();
+            foreach (var entry in metadata)
+            {
+                props[entry.Key] = entry.Value ?? string.Empty;
+            }
 
             return Delegates.NoOp;
         }
