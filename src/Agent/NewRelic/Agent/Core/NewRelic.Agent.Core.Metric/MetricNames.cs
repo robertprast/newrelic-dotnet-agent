@@ -485,10 +485,7 @@ namespace NewRelic.Agent.Core.Metric
         private const string SupportabilityNetFrameworkVersionPs = SupportabilityDotnetPs + "NetFramework" + PathSeparator;
         private const string SupportabilityNetCoreVersionPs = SupportabilityDotnetPs + "NetCore" + PathSeparator;
         private const string LoggingMetrics = "Logging";
-        // private const string LoggingMetricsDotnetLines = LoggingMetrics + PathSeparator + Dotnet + PathSeparator + "lines" + PathSeparator;
-        // private const string LoggingMetricsDotnetSize = LoggingMetrics + PathSeparator + Dotnet + PathSeparator + "size" + PathSeparator;
         private const string LoggingMetricsDotnetLines = LoggingMetrics + PathSeparator + "lines";
-        private const string LoggingMetricsDotnetSize = LoggingMetrics + PathSeparator + "size";
 
         // Metrics
         // NOTE: This metric is REQUIRED by the collector (it is used as a heartbeat)
@@ -1028,19 +1025,9 @@ namespace NewRelic.Agent.Core.Metric
             return LoggingMetricsDotnetLines + PathSeparator + logLevel;
         }
 
-        public static string GetLoggingMetricsSizeBySeverityName(string logLevel)
-        {
-            return LoggingMetricsDotnetSize + PathSeparator + logLevel;
-        }
-
         public static string GetLoggingMetricsLinesName()
         {
             return LoggingMetricsDotnetLines;
-        }
-
-        public static string GetLoggingMetricsSizeName()
-        {
-            return LoggingMetricsDotnetSize;
         }
 
         #endregion Logging Metrics

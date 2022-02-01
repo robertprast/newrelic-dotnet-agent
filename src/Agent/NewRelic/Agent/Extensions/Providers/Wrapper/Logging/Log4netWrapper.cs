@@ -33,16 +33,19 @@ namespace NewRelic.Providers.Wrapper.Logging
             var getLogLvelFunc = _getLogLevel ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<object>(loggingEvent.GetType(), "Level");
             var logLevel = getLogLvelFunc(loggingEvent).ToString(); // Level class has a ToString override we can use.
 
+            var xapi = agent.GetExperimentalApi();
+            xapi.IncrementLogLinesCount(logLevel);
+
+            if (!agent.CurrentTransaction.IsValid)
+            {
+                return Delegates.NoOp;
+            }
+
             // RenderedMessage is get only
             var getRenderedMessageFunc = _getRenderedMessage ??= VisibilityBypasser.Instance.GeneratePropertyAccessor<string>(loggingEvent.GetType(), "RenderedMessage");
             var renderedMessage = getRenderedMessageFunc(loggingEvent);
 
-            var logLineSize = renderedMessage.Length * sizeof(Char);
-            var xapi = agent.GetExperimentalApi();
-            xapi.IncrementLogLinesCount(logLevel);
-            xapi.UpdateLogSize(logLevel, logLineSize);
-
-            if (!agent.CurrentTransaction.IsValid || string.IsNullOrWhiteSpace(renderedMessage))
+            if (string.IsNullOrWhiteSpace(renderedMessage))
             {
                 return Delegates.NoOp;
             }

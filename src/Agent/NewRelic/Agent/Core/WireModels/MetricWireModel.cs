@@ -963,22 +963,10 @@ namespace NewRelic.Agent.Core.WireModels
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(count));
             }
 
-            public MetricWireModel TryBuildLoggingMetricsSizeBySeverityMetric(string logLevel, int size)
-            {
-                var proposedName = MetricNames.GetLoggingMetricsSizeBySeverityName(logLevel);
-                return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
-            }
-
             public MetricWireModel TryBuildLoggingMetricsLinesCountMetric(int count)
             {
                 var proposedName = MetricNames.GetLoggingMetricsLinesName();
                 return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(count));
-            }
-
-            public MetricWireModel TryBuildLoggingMetricsSizeMetric(int size)
-            {
-                var proposedName = MetricNames.GetLoggingMetricsSizeName();
-                return BuildMetric(_metricNameService, proposedName, null, MetricDataWireModel.BuildCountData(size)); // is count correct?
             }
 
             public MetricWireModel TryBuildSupportabilitLoggingEventsCollectedMetric()

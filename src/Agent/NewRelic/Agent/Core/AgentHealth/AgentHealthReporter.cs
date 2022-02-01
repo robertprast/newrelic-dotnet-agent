@@ -22,7 +22,6 @@ namespace NewRelic.Agent.Core.AgentHealth
     public class AgentHealthReporter : DisposableService, IAgentHealthReporter
     {
         private readonly ConcurrentDictionary<string, InterlockedCounter> _logLinesCountByLevel = new ConcurrentDictionary<string, InterlockedCounter>();
-        private readonly ConcurrentDictionary<string, InterlockedCounter> _logLinesSizeByLevel = new ConcurrentDictionary<string, InterlockedCounter>();
 
         private static readonly TimeSpan _timeBetweenExecutions = TimeSpan.FromMinutes(1);
 
@@ -634,21 +633,6 @@ namespace NewRelic.Agent.Core.AgentHealth
             {
                 TrySend(_metricBuilder.TryBuildLoggingMetricsLinesCountMetric(totalCount));
             }
-            
-            var totalSize = 0;
-            foreach (var logsSizeCounter in _logLinesSizeByLevel)
-            {
-                if (TryGetCount(logsSizeCounter.Value, out var linesSize))
-                {
-                    totalSize += linesSize;
-                    TrySend(_metricBuilder.TryBuildLoggingMetricsSizeBySeverityMetric(logsSizeCounter.Key, linesSize));
-                }
-            }
-
-            if (totalSize > 0)
-            {
-                TrySend(_metricBuilder.TryBuildLoggingMetricsSizeMetric(totalSize));
-            }
         }
 
         public void IncrementLogLinesCount(string logLevel)
@@ -656,13 +640,6 @@ namespace NewRelic.Agent.Core.AgentHealth
             var normalizedLevel = logLevel.ToUpper();
             _logLinesCountByLevel.TryAdd(normalizedLevel, new InterlockedCounter());
             _logLinesCountByLevel[normalizedLevel].Increment();
-        }
-
-        public void UpdateLogSize(string logLevel, int logLineSize)
-        {
-            var normalizedLevel = logLevel.ToUpper();
-            _logLinesSizeByLevel.TryAdd(normalizedLevel, new InterlockedCounter());
-            _logLinesSizeByLevel[normalizedLevel].Add(logLineSize);
         }
 
         public void ReportLoggingEventCollected() => TrySend(_metricBuilder.TryBuildSupportabilitLoggingEventsCollectedMetric());
