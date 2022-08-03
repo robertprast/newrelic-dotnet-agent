@@ -14,7 +14,7 @@
     <PackageReference Include="Amazon.Lambda.DynamoDBEvents" Version="1.0.0" />
     <PackageReference Include="Amazon.Lambda.KinesisEvents" Version="1.0.0" />
     <PackageReference Include="Amazon.Lambda.KinesisFirehoseEvents" Version="1.0.0" />
-    <PackageReference Include="Amazon.Lambda.S3Events" Version="1.0.0" />
+    <PackageReference Include="Amazon.Lambda.S3Events" Version="3.0.0" />
     <PackageReference Include="Amazon.Lambda.SNSEvents" Version="1.0.0" />
     <PackageReference Include="Amazon.Lambda.SQSEvents" Version="1.0.0" />
     <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.3.3" />
